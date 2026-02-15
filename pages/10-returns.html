@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Returns &amp; Refunds - GameBox</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    /* ========== RETURNS PAGE STYLES ========== */
+
+    /* --- Policy Highlights --- */
+    .policy-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .policy-card {
+      text-align: center;
+      padding: 40px 28px;
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-normal);
+    }
+
+    .policy-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-6px);
+    }
+
+    .policy-card .policy-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      background-color: var(--color-bg-light);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .policy-card h4 {
+      font-size: 1.2rem;
+      color: var(--color-secondary);
+      margin-bottom: 8px;
+    }
+
+    .policy-card p {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    /* --- Return Process Steps --- */
+    .return-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    .return-steps::before {
+      content: '';
+      position: absolute;
+      top: 50px;
+      left: 15%;
+      right: 15%;
+      height: 3px;
+      background: linear-gradient(to right, var(--color-primary), var(--color-accent), var(--color-primary));
+      z-index: 0;
+      opacity: 0.3;
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 36px 24px;
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      z-index: 1;
+      transition: all var(--transition-normal);
+    }
+
+    .step-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-6px);
+    }
+
+    .step-card .step-number {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      color: #fff;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      box-shadow: 0 4px 16px rgba(255, 107, 53, 0.35);
+    }
+
+    .step-card .step-icon-large {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .step-card h4 {
+      font-size: 1.1rem;
+      color: var(--color-secondary);
+      margin-bottom: 10px;
+    }
+
+    .step-card p {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    /* --- Eligibility Section --- */
+    .eligibility-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .eligibility-card {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .eligibility-card .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--color-border-light);
+    }
+
+    .eligibility-card .card-header .header-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .eligibility-card.eligible .card-header .header-icon {
+      background-color: rgba(123, 199, 77, 0.15);
+      color: var(--color-accent-dark);
+    }
+
+    .eligibility-card.not-eligible .card-header .header-icon {
+      background-color: rgba(220, 53, 69, 0.1);
+      color: var(--color-error);
+    }
+
+    .eligibility-card .card-header h4 {
+      font-size: 1.15rem;
+      margin-bottom: 0;
+    }
+
+    .eligibility-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .eligibility-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+
+    .eligibility-list li .list-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .eligibility-card.eligible .list-icon {
+      background-color: rgba(123, 199, 77, 0.15);
+      color: var(--color-accent-dark);
+    }
+
+    .eligibility-card.not-eligible .list-icon {
+      background-color: rgba(220, 53, 69, 0.1);
+      color: var(--color-error);
+    }
+
+    /* --- Refund Methods Table --- */
+    .refund-table-wrapper {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .refund-table {
+      width: 100%;
+    }
+
+    .refund-table thead {
+      background-color: var(--color-secondary);
+    }
+
+    .refund-table thead th {
+      padding: 18px 28px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      text-align: left;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    .refund-table tbody tr {
+      border-bottom: 1px solid var(--color-border-light);
+      transition: background-color var(--transition-fast);
+    }
+
+    .refund-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .refund-table tbody tr:hover {
+      background-color: var(--color-bg-light);
+    }
+
+    .refund-table tbody td {
+      padding: 20px 28px;
+      font-size: 0.95rem;
+      color: var(--color-text);
+    }
+
+    .refund-table tbody td:first-child {
+      font-weight: 600;
+      color: var(--color-secondary);
+    }
+
+    .refund-table .time-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      background-color: rgba(123, 199, 77, 0.12);
+      color: var(--color-accent-dark);
+      border-radius: var(--radius-xl);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* --- FAQ Section --- */
+    .returns-faq {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* --- CTA Banner --- */
+    .returns-cta-banner {
+      background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-light));
+      border-radius: var(--radius-lg);
+      padding: 48px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .returns-cta-banner h3 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+    }
+
+    .returns-cta-banner p {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ==================== TOP BAR ==================== -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-left">
+        <span>&#9993; support@gamebox.de</span>
+        <span>&#9742; +49 123 456 7890</span>
+        <span>&#128666; Free Shipping over $150</span>
+      </div>
+      <div class="top-bar-right">
+        <select>
+          <option>English</option>
+          <option>Deutsch</option>
+          <option>Fran&ccedil;ais</option>
+        </select>
+        <select>
+          <option>USD ($)</option>
+          <option>EUR (&euro;)</option>
+          <option>JPY (&yen;)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="container">
+      <a href="01-home.html" class="logo">
+        <div class="logo-icon">G</div>
+        <div class="logo-text">Game<span>Box</span></div>
+      </a>
+      <nav class="main-nav">
+        <a href="01-home.html">Home</a>
+        <a href="02-shop.html">Shop</a>
+        <a href="04-how-it-works.html">How It Works</a>
+        <a href="05-gift-finder.html">Gift Finder</a>
+        <a href="06-about.html">About Us</a>
+        <a href="07-contact.html">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="header-action-btn" title="Search">&#128269;</button>
+        <button class="header-action-btn" title="Account">&#128100;</button>
+        <button class="header-action-btn" title="Wishlist">&#9825;<span class="badge-count">2</span></button>
+        <button class="header-action-btn" title="Cart">&#128722;<span class="badge-count">3</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- ===== PAGE BANNER ===== -->
+    <div class="page-banner">
+      <div class="container">
+        <h1>Returns &amp; Refunds</h1>
+        <div class="breadcrumb">
+          <a href="01-home.html">Home</a>
+          <span class="separator">/</span>
+          <span class="current">Returns &amp; Refunds</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== POLICY HIGHLIGHTS ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Hassle-free returns!</span>
+          <h2>Our Return Policy at a Glance</h2>
+          <p>We want you to be 100% happy with your purchase. If something isn&rsquo;t right, we make returns simple.</p>
+        </div>
+
+        <div class="policy-highlights">
+          <div class="policy-card">
+            <div class="policy-icon">&#128197;</div>
+            <h4>30-Day Returns</h4>
+            <p>Changed your mind? No problem. You have 30 days from delivery to initiate a return &mdash; no questions asked.</p>
+          </div>
+          <div class="policy-card">
+            <div class="policy-icon">&#127465;&#127466;</div>
+            <h4>Free Returns in Germany</h4>
+            <p>Returning from within Germany? We cover the shipping costs. Simply use the prepaid return label we provide.</p>
+          </div>
+          <div class="policy-card">
+            <div class="policy-icon">&#9889;</div>
+            <h4>Fast Refunds (5&ndash;7 Days)</h4>
+            <p>Once we receive your return, refunds are processed within 5&ndash;7 business days back to your original payment method.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== RETURN PROCESS STEPS ===== -->
+    <section class="section bg-white">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Easy as 1-2-3-4</span>
+          <h2>How to Return an Item</h2>
+          <p>Follow these four simple steps and we&rsquo;ll take care of the rest.</p>
+        </div>
+
+        <div class="return-steps">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <span class="step-icon-large">&#9993;</span>
+            <h4>Contact Us</h4>
+            <p>Email us at support@gamebox.de or use our contact form with your order number and reason for return.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <span class="step-icon-large">&#127991;</span>
+            <h4>Get Your Label</h4>
+            <p>We&rsquo;ll send you a prepaid return shipping label and instructions within 24 hours.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <span class="step-icon-large">&#128230;</span>
+            <h4>Ship the Item</h4>
+            <p>Pack the item securely in its original packaging, attach the label, and drop it off at any DHL location.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <span class="step-icon-large">&#128176;</span>
+            <h4>Receive Your Refund</h4>
+            <p>Once we inspect the returned item, your refund will be processed within 5&ndash;7 business days.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ELIGIBILITY SECTION ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Before you return</span>
+          <h2>Return Eligibility</h2>
+          <p>Please review the following conditions to ensure your item qualifies for a return.</p>
+        </div>
+
+        <div class="eligibility-grid">
+          <!-- CAN be returned -->
+          <div class="eligibility-card eligible">
+            <div class="card-header">
+              <div class="header-icon">&#10003;</div>
+              <h4>What CAN Be Returned</h4>
+            </div>
+            <ul class="eligibility-list">
+              <li>
+                <span class="list-icon">&#10003;</span>
+                <span>Items that are <strong>unused and in original condition</strong> &mdash; no signs of wear, play, or damage.</span>
+              </li>
+              <li>
+                <span class="list-icon">&#10003;</span>
+                <span>Products in their <strong>original packaging</strong> with all tags, seals, and accessories included.</span>
+              </li>
+              <li>
+                <span class="list-icon">&#10003;</span>
+                <span>Orders returned <strong>within 30 days</strong> of the delivery date (postmark date counts).</span>
+              </li>
+              <li>
+                <span class="list-icon">&#10003;</span>
+                <span>Items that arrived <strong>damaged or defective</strong> &mdash; contact us immediately with photos.</span>
+              </li>
+              <li>
+                <span class="list-icon">&#10003;</span>
+                <span><strong>Wrong item received</strong> &mdash; we&rsquo;ll send the correct one and cover return shipping.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CANNOT be returned -->
+          <div class="eligibility-card not-eligible">
+            <div class="card-header">
+              <div class="header-icon">&#10007;</div>
+              <h4>What CANNOT Be Returned</h4>
+            </div>
+            <ul class="eligibility-list">
+              <li>
+                <span class="list-icon">&#10007;</span>
+                <span><strong>Opened or used items</strong> &mdash; boxes that have been unsealed, assembled, or played with.</span>
+              </li>
+              <li>
+                <span class="list-icon">&#10007;</span>
+                <span><strong>Personalized or custom items</strong> &mdash; boxes with custom greeting cards or bespoke configurations.</span>
+              </li>
+              <li>
+                <span class="list-icon">&#10007;</span>
+                <span><strong>Sale items priced under $5</strong> &mdash; deeply discounted clearance items are final sale.</span>
+              </li>
+              <li>
+                <span class="list-icon">&#10007;</span>
+                <span><strong>Gift cards and digital products</strong> &mdash; these are non-refundable once issued.</span>
+              </li>
+              <li>
+                <span class="list-icon">&#10007;</span>
+                <span><strong>Items returned after 30 days</strong> &mdash; the return window has closed after this period.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== REFUND METHODS ===== -->
+    <section class="section bg-white">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Getting your money back</span>
+          <h2>Refund Methods &amp; Timelines</h2>
+          <p>Choose how you&rsquo;d like to receive your refund. Processing times vary by method.</p>
+        </div>
+
+        <div class="refund-table-wrapper">
+          <table class="refund-table">
+            <thead>
+              <tr>
+                <th>Refund Method</th>
+                <th>Processing Time</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>&#128179; Original Payment Method</td>
+                <td><span class="time-badge">&#9201; 5&ndash;7 business days</span></td>
+                <td>Refund is credited back to the card, PayPal, or payment method used for the original purchase.</td>
+              </tr>
+              <tr>
+                <td>&#127991; Store Credit</td>
+                <td><span class="time-badge">&#9889; Instant</span></td>
+                <td>Receive the full amount as GameBox store credit, available immediately for your next order.</td>
+              </tr>
+              <tr>
+                <td>&#128259; Product Exchange</td>
+                <td><span class="time-badge">&#128230; Ships when received</span></td>
+                <td>Swap for a different theme or size. The replacement ships as soon as we receive your return.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ SECTION ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Common questions</span>
+          <h2>Returns &amp; Refunds FAQ</h2>
+        </div>
+
+        <div class="returns-faq">
+          <div class="accordion-item active">
+            <div class="accordion-header">
+              <span>Can I return a box that has already been opened?</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Unfortunately, opened or used items cannot be returned for a refund. However, if the product arrived damaged or defective, please contact us within 7 days with photos and we&rsquo;ll arrange a replacement or full refund regardless of whether it has been opened.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Do I have to pay for return shipping?</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Returns within Germany are completely free &mdash; we provide a prepaid DHL return label. For returns from other EU countries, a flat-rate return shipping fee of &euro;4.95 will be deducted from your refund amount. If the return is due to our error (wrong or defective item), return shipping is always free.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>How long does it take to process my refund?</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Once we receive and inspect your returned item, refunds are processed within 5&ndash;7 business days. The refund goes back to your original payment method. Please note that your bank may take an additional 2&ndash;3 business days to reflect the credit on your statement. Store credit refunds are applied instantly.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Can I exchange my box for a different theme or size?</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Yes! We&rsquo;re happy to exchange your unopened box for a different theme, size, or color variant. Simply contact us to initiate the exchange. We&rsquo;ll ship the replacement as soon as we receive your return. If there&rsquo;s a price difference, we&rsquo;ll charge or refund the difference accordingly.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA BANNER ===== -->
+    <section class="section-sm">
+      <div class="container">
+        <div class="returns-cta-banner">
+          <div>
+            <h3>Need Help with a Return?</h3>
+            <p>Our support team is here to make the process as smooth as possible. Reach out and we&rsquo;ll respond within 24 hours.</p>
+          </div>
+          <a href="07-contact.html" class="btn btn-primary btn-lg">Contact Support</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEWSLETTER ===== -->
+    <section class="newsletter-bar">
+      <div class="container">
+        <div>
+          <h3>Stay in the Loop!</h3>
+          <p>Subscribe to get exclusive deals, new box announcements, and 10% off your first order.</p>
+        </div>
+        <form class="newsletter-form">
+          <input type="email" class="form-input" placeholder="Enter your email address">
+          <button type="submit" class="btn">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo"><div class="logo-icon">G</div><div class="logo-text">Game<span style="color:var(--color-primary);">Box</span></div></div>
+          <p>Curated themed gift boxes for kids filled with building blocks, creative supplies, and fun extras.</p>
+          <div class="footer-social"><a href="#">Fb</a><a href="#">Ig</a><a href="#">Tk</a><a href="#">Yt</a></div>
+        </div>
+        <div class="footer-col"><h4>Quick Links</h4><div class="footer-links"><a href="01-home.html">Home</a><a href="02-shop.html">Shop All</a><a href="05-gift-finder.html">Gift Finder</a><a href="04-how-it-works.html">How It Works</a><a href="06-about.html">About Us</a></div></div>
+        <div class="footer-col"><h4>Customer Service</h4><div class="footer-links"><a href="08-faq.html">FAQ / Help Center</a><a href="09-shipping.html">Shipping &amp; Delivery</a><a href="10-returns.html">Returns &amp; Refunds</a><a href="07-contact.html">Contact Us</a><a href="16-account.html">My Account</a></div></div>
+        <div class="footer-col"><h4>Legal</h4><div class="footer-links"><a href="11-privacy.html">Privacy Policy</a><a href="12-terms.html">Terms &amp; Conditions</a><a href="13-impressum.html">Imprint (Impressum)</a></div></div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">&copy; 2026 GameBox. All rights reserved.</div>
+        <div class="footer-payments"><div class="payment-icon">VISA</div><div class="payment-icon">MC</div><div class="payment-icon">PAYPAL</div><div class="payment-icon">KLARNA</div></div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

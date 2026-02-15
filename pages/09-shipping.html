@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping &amp; Delivery - GameBox</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    /* ========== SHIPPING PAGE STYLES ========== */
+
+    /* --- Shipping Options Cards --- */
+    .shipping-options-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .shipping-option-card {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      position: relative;
+      transition: all var(--transition-normal);
+      border: 2px solid transparent;
+    }
+
+    .shipping-option-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-6px);
+    }
+
+    .shipping-option-card.featured {
+      border-color: var(--color-primary);
+    }
+
+    .shipping-option-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: var(--radius-xl);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .shipping-option-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      background-color: var(--color-bg-light);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .shipping-option-card.featured .shipping-option-icon {
+      background: linear-gradient(135deg, rgba(255,107,53,0.12), rgba(255,107,53,0.04));
+    }
+
+    .shipping-option-card h3 {
+      font-size: 1.25rem;
+      color: var(--color-secondary);
+      margin-bottom: 6px;
+    }
+
+    .shipping-option-delivery {
+      font-size: 0.9rem;
+      color: var(--color-primary);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .shipping-option-card p {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .shipping-option-price {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--color-secondary);
+    }
+
+    .shipping-option-price .price-note {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    /* --- Shipping Zones Table --- */
+    .shipping-zones-card {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .shipping-zones-card h3 {
+      font-size: 1.3rem;
+      color: var(--color-secondary);
+      margin-bottom: 6px;
+    }
+
+    .shipping-zones-card > p {
+      font-size: 0.95rem;
+      color: var(--color-text-light);
+      margin-bottom: 24px;
+    }
+
+    .zones-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .zones-table thead th {
+      text-align: left;
+      padding: 14px 16px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-text-muted);
+      background-color: var(--color-bg-light);
+      border-bottom: 2px solid var(--color-border-light);
+    }
+
+    .zones-table thead th:first-child {
+      border-radius: var(--radius-sm) 0 0 0;
+    }
+
+    .zones-table thead th:last-child {
+      border-radius: 0 var(--radius-sm) 0 0;
+    }
+
+    .zones-table tbody td {
+      padding: 16px;
+      font-size: 0.9rem;
+      color: var(--color-text);
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .zones-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .zones-table tbody tr:hover {
+      background-color: rgba(255,107,53,0.03);
+    }
+
+    .zone-name {
+      font-weight: 700;
+      color: var(--color-secondary);
+    }
+
+    .zone-name .zone-icon {
+      margin-right: 8px;
+    }
+
+    .zone-countries {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    .free-badge {
+      display: inline-block;
+      background-color: rgba(123,199,77,0.12);
+      color: var(--color-accent-dark);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* --- Order Tracking Section --- */
+    .tracking-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .tracking-steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: 12%;
+      right: 12%;
+      height: 3px;
+      background: linear-gradient(to right, var(--color-accent), var(--color-primary), var(--color-accent));
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .tracking-step {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tracking-step-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 16px;
+      background-color: var(--color-bg-white);
+      border: 3px solid var(--color-border-light);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      transition: all var(--transition-normal);
+    }
+
+    .tracking-step.active .tracking-step-icon {
+      border-color: var(--color-primary);
+      background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,107,53,0.02));
+      box-shadow: 0 4px 16px rgba(255,107,53,0.2);
+    }
+
+    .tracking-step h4 {
+      font-size: 1rem;
+      color: var(--color-secondary);
+      margin-bottom: 4px;
+    }
+
+    .tracking-step p {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0;
+    }
+
+    .tracking-info {
+      max-width: 600px;
+      margin: 40px auto 0;
+      text-align: center;
+    }
+
+    .tracking-info p {
+      font-size: 0.95rem;
+      color: var(--color-text-light);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    /* --- Important Info Accordion --- */
+    .info-accordion-grid {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* --- CTA Banner --- */
+    .shipping-cta-banner {
+      background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-light));
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .shipping-cta-banner h3 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .shipping-cta-banner p {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.95rem;
+      margin-bottom: 0;
+      max-width: 480px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ==================== TOP BAR ==================== -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-left">
+        <span>&#9993; support@gamebox.de</span>
+        <span>&#9742; +49 123 456 7890</span>
+        <span>&#128666; Free Shipping over $150</span>
+      </div>
+      <div class="top-bar-right">
+        <select>
+          <option>English</option>
+          <option>Deutsch</option>
+          <option>Fran&ccedil;ais</option>
+        </select>
+        <select>
+          <option>USD ($)</option>
+          <option>EUR (&euro;)</option>
+          <option>JPY (&yen;)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="container">
+      <a href="01-home.html" class="logo">
+        <div class="logo-icon">G</div>
+        <div class="logo-text">Game<span>Box</span></div>
+      </a>
+      <nav class="main-nav">
+        <a href="01-home.html">Home</a>
+        <a href="02-shop.html" class="active">Shop</a>
+        <a href="04-how-it-works.html">How It Works</a>
+        <a href="05-gift-finder.html">Gift Finder</a>
+        <a href="06-about.html">About Us</a>
+        <a href="07-contact.html">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="header-action-btn" title="Search">&#128269;</button>
+        <button class="header-action-btn" title="Account">&#128100;</button>
+        <button class="header-action-btn" title="Wishlist">&#9825;<span class="badge-count">2</span></button>
+        <button class="header-action-btn" title="Cart">&#128722;<span class="badge-count">3</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- ===== PAGE BANNER ===== -->
+    <div class="page-banner">
+      <div class="container">
+        <h1>Shipping &amp; Delivery</h1>
+        <div class="breadcrumb">
+          <a href="01-home.html">Home</a>
+          <span class="separator">/</span>
+          <span class="current">Shipping</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SHIPPING OPTIONS ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Choose your speed</span>
+          <h2>Shipping Options</h2>
+          <p>We offer flexible delivery options to get your GameBox to you (or the lucky recipient) as quickly as you need.</p>
+        </div>
+
+        <div class="shipping-options-grid">
+
+          <!-- Standard Shipping -->
+          <div class="shipping-option-card">
+            <div class="shipping-option-icon">&#128230;</div>
+            <h3>Standard Shipping</h3>
+            <div class="shipping-option-delivery">3&ndash;5 Business Days</div>
+            <p>Our reliable standard delivery option. Perfect for when you&rsquo;re planning ahead. Tracked from warehouse to doorstep.</p>
+            <div class="shipping-option-price">
+              FREE
+              <span class="price-note">on orders over $150 &bull; otherwise $4.95</span>
+            </div>
+          </div>
+
+          <!-- Express Shipping -->
+          <div class="shipping-option-card featured">
+            <div class="shipping-option-badge">Most Popular</div>
+            <div class="shipping-option-icon">&#128666;</div>
+            <h3>Express Shipping</h3>
+            <div class="shipping-option-delivery">1&ndash;2 Business Days</div>
+            <p>Need it fast? Our express option ensures your gift box arrives within 1&ndash;2 business days. Fully tracked with priority handling.</p>
+            <div class="shipping-option-price">
+              $9.95
+              <span class="price-note">flat rate &bull; all eligible destinations</span>
+            </div>
+          </div>
+
+          <!-- Same-Day Delivery -->
+          <div class="shipping-option-card">
+            <div class="shipping-option-icon">&#9889;</div>
+            <h3>Same-Day Delivery</h3>
+            <div class="shipping-option-delivery">Within Hours</div>
+            <p>Last-minute gift? No problem! Order before 2 PM and receive your box the same day. Currently available in the Berlin metro area only.</p>
+            <div class="shipping-option-price">
+              $14.95
+              <span class="price-note">Berlin metro area only</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SHIPPING ZONES TABLE ===== -->
+    <section class="section bg-white">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Where we deliver</span>
+          <h2>Shipping Zones &amp; Rates</h2>
+        </div>
+
+        <div class="shipping-zones-card">
+          <h3>Delivery Destinations</h3>
+          <p>We currently ship across Europe. Rates and delivery times vary depending on your location. All shipments include full tracking.</p>
+
+          <table class="zones-table">
+            <thead>
+              <tr>
+                <th>Zone</th>
+                <th>Delivery Time</th>
+                <th>Standard Rate</th>
+                <th>Free Shipping</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="zone-name"><span class="zone-icon">&#127465;&#127466;</span> Germany</div>
+                  <div class="zone-countries">All regions including islands</div>
+                </td>
+                <td>3&ndash;5 business days</td>
+                <td>$4.95</td>
+                <td><span class="free-badge">Free over $150</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="zone-name"><span class="zone-icon">&#127466;&#127482;</span> EU West</div>
+                  <div class="zone-countries">France, Netherlands, Belgium, Austria, Luxembourg</div>
+                </td>
+                <td>5&ndash;7 business days</td>
+                <td>$8.95</td>
+                <td><span class="free-badge">Free over $150</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="zone-name"><span class="zone-icon">&#127466;&#127482;</span> EU East</div>
+                  <div class="zone-countries">Poland, Czech Republic, Hungary, Romania, others</div>
+                </td>
+                <td>7&ndash;10 business days</td>
+                <td>$12.95</td>
+                <td><span class="free-badge">Free over $200</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="zone-name"><span class="zone-icon">&#127464;&#127469;</span> Switzerland &amp; Norway</div>
+                  <div class="zone-countries">Non-EU European countries</div>
+                </td>
+                <td>7&ndash;12 business days</td>
+                <td>$14.95</td>
+                <td>&mdash;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ORDER TRACKING ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Stay informed</span>
+          <h2>Track Your Order</h2>
+          <p>Every order is fully tracked from the moment it leaves our warehouse. Here&rsquo;s what to expect.</p>
+        </div>
+
+        <div class="tracking-steps">
+          <div class="tracking-step active">
+            <div class="tracking-step-icon">&#128203;</div>
+            <h4>Order Placed</h4>
+            <p>Confirmation email sent</p>
+          </div>
+          <div class="tracking-step active">
+            <div class="tracking-step-icon">&#9881;</div>
+            <h4>Processing</h4>
+            <p>Box being assembled</p>
+          </div>
+          <div class="tracking-step active">
+            <div class="tracking-step-icon">&#128666;</div>
+            <h4>Shipped</h4>
+            <p>Tracking link emailed</p>
+          </div>
+          <div class="tracking-step">
+            <div class="tracking-step-icon">&#127873;</div>
+            <h4>Delivered</h4>
+            <p>At your doorstep</p>
+          </div>
+        </div>
+
+        <div class="tracking-info">
+          <p>Once your order ships, you&rsquo;ll receive an email with a tracking number and a link to follow your package in real time. You can also check the status anytime from the <a href="16-account.html" style="color:var(--color-primary);font-weight:600;">My Account</a> dashboard.</p>
+          <a href="#" class="btn btn-outline">Track My Order</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== IMPORTANT INFORMATION ===== -->
+    <section class="section bg-white">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Good to know</span>
+          <h2>Important Information</h2>
+        </div>
+
+        <div class="info-accordion-grid">
+
+          <div class="accordion-item active">
+            <div class="accordion-header">
+              <span>&#9200; Order Cut-Off Times</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Orders placed before <strong>2:00 PM CET</strong> on business days are processed the same day. Orders placed after 2:00 PM or on weekends and public holidays will be processed the next business day. Express orders follow the same cut-off &mdash; order before 2 PM for next-day delivery. Same-day delivery in Berlin requires ordering before <strong>12:00 PM</strong>.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>&#128230; Packaging &amp; Presentation</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Every GameBox is shipped in a sturdy outer carton to protect the beautifully designed gift box inside. We use eco-friendly, recyclable packaging materials. If you&rsquo;re sending the box as a gift, rest assured &mdash; no pricing information or invoices are included in the package. A gift receipt can be accessed through your account.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>&#127757; Customs &amp; Import Duties (Non-EU)</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Shipments to Switzerland and Norway may be subject to local customs duties, import taxes, or brokerage fees. These charges are determined by your country&rsquo;s customs authority and are the responsibility of the recipient. GameBox has no control over these charges and cannot predict their amount. We recommend checking with your local customs office before ordering.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>&#128221; Address Changes &amp; Failed Deliveries</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Need to change your shipping address? Contact us at <strong>support@gamebox.de</strong> as soon as possible. Address changes are possible within <strong>2 hours</strong> of placing your order, before it enters fulfillment. After a package has shipped, we cannot modify the destination. If a delivery fails (incorrect address, unclaimed), the package will be returned to us and we&rsquo;ll contact you to arrange reshipment (additional shipping fees may apply).
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA BANNER ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="shipping-cta-banner">
+          <div>
+            <h3>Still Have Questions About Shipping?</h3>
+            <p>Our support team is here to help with any delivery questions. Reach out and we&rsquo;ll get back to you within 24 hours.</p>
+          </div>
+          <a href="07-contact.html" class="btn btn-primary btn-lg">Contact Us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEWSLETTER ===== -->
+    <section class="newsletter-bar">
+      <div class="container">
+        <div>
+          <h3>Stay in the Loop!</h3>
+          <p>Subscribe to get exclusive deals, new box announcements, and 10% off your first order.</p>
+        </div>
+        <form class="newsletter-form">
+          <input type="email" class="form-input" placeholder="Enter your email address">
+          <button type="submit" class="btn">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo"><div class="logo-icon">G</div><div class="logo-text">Game<span style="color:var(--color-primary);">Box</span></div></div>
+          <p>Curated themed gift boxes for kids filled with building blocks, creative supplies, and fun extras.</p>
+          <div class="footer-social"><a href="#">Fb</a><a href="#">Ig</a><a href="#">Tk</a><a href="#">Yt</a></div>
+        </div>
+        <div class="footer-col"><h4>Quick Links</h4><div class="footer-links"><a href="01-home.html">Home</a><a href="02-shop.html">Shop All</a><a href="05-gift-finder.html">Gift Finder</a><a href="04-how-it-works.html">How It Works</a><a href="06-about.html">About Us</a></div></div>
+        <div class="footer-col"><h4>Customer Service</h4><div class="footer-links"><a href="08-faq.html">FAQ / Help Center</a><a href="09-shipping.html">Shipping &amp; Delivery</a><a href="10-returns.html">Returns &amp; Refunds</a><a href="07-contact.html">Contact Us</a><a href="16-account.html">My Account</a></div></div>
+        <div class="footer-col"><h4>Legal</h4><div class="footer-links"><a href="11-privacy.html">Privacy Policy</a><a href="12-terms.html">Terms &amp; Conditions</a><a href="13-impressum.html">Imprint (Impressum)</a></div></div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">&copy; 2026 GameBox. All rights reserved.</div>
+        <div class="footer-payments"><div class="payment-icon">VISA</div><div class="payment-icon">MC</div><div class="payment-icon">PAYPAL</div><div class="payment-icon">KLARNA</div></div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
