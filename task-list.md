@@ -11,7 +11,7 @@
 
 ## Phase 2: Core Pages
 
-- [ ] **Task 3:** Create `pages/01-home.html` - Home page with hero, featured categories, how-it-works preview, bestsellers, testimonials, trust badges
+- [x] **Task 3:** Create `pages/01-home.html` - Home page with hero, featured categories, how-it-works preview, bestsellers, testimonials, trust badges ✅
 - [ ] **Task 4:** Create `pages/02-shop.html` - Shop page with product grid, category filters, sorting, sidebar
 - [ ] **Task 5:** Create `pages/03-product.html` - Single product page with composite product selector, image gallery, add-ons, greeting card, price calculator
 - [ ] **Task 6:** Create `pages/04-how-it-works.html` - Step-by-step guide page (4 steps with icons and descriptions)
@@ -45,10 +45,10 @@
 | Phase | Tasks | Status |
 |---|---|---|
 | Phase 1: Foundation | Tasks 1-2 | Complete (2/2) |
-| Phase 2: Core Pages | Tasks 3-9 | Not Started |
+| Phase 2: Core Pages | Tasks 3-9 | In Progress (1/7) |
 | Phase 3: Support Pages | Tasks 10-15 | Not Started |
 | Phase 4: WooCommerce | Tasks 16-18 | Not Started |
 | Phase 5: Utility | Task 19 | Not Started |
 
 **Total Tasks:** 19
-**Completed:** 2 / 19
+**Completed:** 3 / 19
