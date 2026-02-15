@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop All Gift Boxes - GameBox</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    /* ========== SHOP PAGE SPECIFIC STYLES ========== */
+
+    .shop-layout {
+      display: flex;
+      gap: 36px;
+      align-items: flex-start;
+    }
+
+    /* --- Sidebar --- */
+    .shop-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-card {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .sidebar-card h4 {
+      font-size: 1rem;
+      color: var(--color-secondary);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--color-border-light);
+    }
+
+    .filter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .filter-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background-color var(--transition-fast);
+      font-size: 0.9rem;
+      color: var(--color-text);
+    }
+
+    .filter-item:hover {
+      background-color: var(--color-bg-light);
+      color: var(--color-primary);
+    }
+
+    .filter-item.active {
+      background-color: rgba(255, 107, 53, 0.08);
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .filter-item .count {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      background-color: var(--color-bg-gray);
+      padding: 2px 8px;
+      border-radius: var(--radius-xl);
+    }
+
+    .filter-item.active .count {
+      background-color: var(--color-primary);
+      color: #fff;
+    }
+
+    /* Price Range Filter */
+    .price-range-inputs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .price-range-inputs input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      text-align: center;
+      background-color: var(--color-bg-white);
+      color: var(--color-text);
+    }
+
+    .price-range-inputs input:focus {
+      border-color: var(--color-primary);
+      outline: none;
+    }
+
+    .price-range-inputs .separator {
+      color: var(--color-text-muted);
+      font-weight: 600;
+    }
+
+    .price-slider {
+      width: 100%;
+      height: 4px;
+      background: var(--color-border-light);
+      border-radius: 2px;
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .price-slider-fill {
+      position: absolute;
+      height: 100%;
+      background-color: var(--color-primary);
+      border-radius: 2px;
+      left: 10%;
+      right: 20%;
+    }
+
+    /* Age Filter */
+    .age-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .age-tag {
+      padding: 6px 14px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .age-tag:hover,
+    .age-tag.active {
+      border-color: var(--color-primary);
+      background-color: var(--color-primary);
+      color: #fff;
+    }
+
+    /* Rating Filter */
+    .rating-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--color-text);
+    }
+
+    .rating-item:hover {
+      color: var(--color-primary);
+    }
+
+    .rating-item .stars {
+      color: var(--color-warning);
+      font-size: 0.9rem;
+    }
+
+    .rating-item .up {
+      color: var(--color-text-muted);
+      font-size: 0.8rem;
+    }
+
+    /* Clear Filters */
+    .clear-filters {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 10px;
+      background-color: var(--color-bg-gray);
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .clear-filters:hover {
+      background-color: var(--color-error);
+      color: #fff;
+    }
+
+    /* --- Main Shop Content --- */
+    .shop-main {
+      flex: 1;
+    }
+
+    /* Toolbar */
+    .shop-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 28px;
+    }
+
+    .shop-result-count {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+    }
+
+    .shop-result-count strong {
+      color: var(--color-text);
+    }
+
+    .shop-toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .shop-sort select {
+      padding: 8px 36px 8px 12px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: var(--color-text);
+      background-color: var(--color-bg-white);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6B6B' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      cursor: pointer;
+    }
+
+    .shop-view-toggle {
+      display: flex;
+      gap: 4px;
+    }
+
+    .shop-view-toggle button {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .shop-view-toggle button.active,
+    .shop-view-toggle button:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      background-color: rgba(255, 107, 53, 0.05);
+    }
+
+    /* Product Grid */
+    .shop-products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    /* Active Filters Bar */
+    .active-filters {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .active-filters-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+    }
+
+    .active-filter-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background-color: rgba(255, 107, 53, 0.1);
+      border-radius: var(--radius-xl);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    .active-filter-tag .remove {
+      cursor: pointer;
+      font-size: 0.9rem;
+      line-height: 1;
+    }
+
+    .active-filter-tag .remove:hover {
+      color: var(--color-error);
+    }
+
+    /* No Results */
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .no-results-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .no-results h3 {
+      color: var(--color-secondary);
+      margin-bottom: 8px;
+    }
+
+    .no-results p {
+      color: var(--color-text-light);
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ==================== TOP BAR ==================== -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-left">
+        <span>&#9993; support@gamebox.de</span>
+        <span>&#9742; +49 123 456 7890</span>
+        <span>&#128666; Free Shipping over $150</span>
+      </div>
+      <div class="top-bar-right">
+        <select>
+          <option>English</option>
+          <option>Deutsch</option>
+          <option>Fran&ccedil;ais</option>
+        </select>
+        <select>
+          <option>USD ($)</option>
+          <option>EUR (&euro;)</option>
+          <option>JPY (&yen;)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="container">
+      <a href="01-home.html" class="logo">
+        <div class="logo-icon">G</div>
+        <div class="logo-text">Game<span>Box</span></div>
+      </a>
+
+      <nav class="main-nav">
+        <a href="01-home.html">Home</a>
+        <a href="02-shop.html" class="active">Shop</a>
+        <a href="04-how-it-works.html">How It Works</a>
+        <a href="05-gift-finder.html">Gift Finder</a>
+        <a href="06-about.html">About Us</a>
+        <a href="07-contact.html">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="header-action-btn" title="Search">&#128269;</button>
+        <button class="header-action-btn" title="Account">&#128100;</button>
+        <button class="header-action-btn" title="Wishlist">
+          &#9825;
+          <span class="badge-count">2</span>
+        </button>
+        <button class="header-action-btn" title="Cart">
+          &#128722;
+          <span class="badge-count">3</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- ===== PAGE BANNER ===== -->
+    <div class="page-banner">
+      <div class="container">
+        <h1>Shop All Gift Boxes</h1>
+        <div class="breadcrumb">
+          <a href="01-home.html">Home</a>
+          <span class="separator">/</span>
+          <span class="current">Shop</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SHOP SECTION ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="shop-layout">
+
+          <!-- ===== SIDEBAR ===== -->
+          <aside class="shop-sidebar">
+
+            <!-- Search -->
+            <div class="sidebar-card">
+              <div class="search-input-wrapper">
+                <span class="search-icon">&#128269;</span>
+                <input type="text" class="form-input" placeholder="Search products...">
+              </div>
+            </div>
+
+            <!-- Categories Filter -->
+            <div class="sidebar-card">
+              <h4>Categories</h4>
+              <div class="filter-list">
+                <div class="filter-item active">
+                  <span>All Products</span>
+                  <span class="count">55</span>
+                </div>
+                <div class="filter-item">
+                  <span>FunGO / Games2Go</span>
+                  <span class="count">11</span>
+                </div>
+                <div class="filter-item">
+                  <span>Biene Maja</span>
+                  <span class="count">14</span>
+                </div>
+                <div class="filter-item">
+                  <span>Rescue Team</span>
+                  <span class="count">7</span>
+                </div>
+                <div class="filter-item">
+                  <span>Drawing</span>
+                  <span class="count">5</span>
+                </div>
+                <div class="filter-item">
+                  <span>Riddle Fun</span>
+                  <span class="count">4</span>
+                </div>
+                <div class="filter-item">
+                  <span>Box 01</span>
+                  <span class="count">7</span>
+                </div>
+                <div class="filter-item">
+                  <span>GiftBox</span>
+                  <span class="count">6</span>
+                </div>
+                <div class="filter-item">
+                  <span>Accessories</span>
+                  <span class="count">8</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="sidebar-card">
+              <h4>Price Range</h4>
+              <div class="price-range-inputs">
+                <input type="text" placeholder="$0" value="$0">
+                <span class="separator">&ndash;</span>
+                <input type="text" placeholder="$50" value="$50">
+              </div>
+              <div class="price-slider">
+                <div class="price-slider-fill"></div>
+              </div>
+              <button class="btn btn-primary btn-sm btn-block">Apply</button>
+            </div>
+
+            <!-- Age Filter -->
+            <div class="sidebar-card">
+              <h4>Age Group</h4>
+              <div class="age-tags">
+                <span class="age-tag">3-4</span>
+                <span class="age-tag active">5-6</span>
+                <span class="age-tag">7-8</span>
+                <span class="age-tag">9-10</span>
+                <span class="age-tag">11+</span>
+              </div>
+            </div>
+
+            <!-- Rating Filter -->
+            <div class="sidebar-card">
+              <h4>Rating</h4>
+              <div class="filter-list">
+                <div class="rating-item">
+                  <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <span class="up">only</span>
+                </div>
+                <div class="rating-item">
+                  <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                  <span class="up">&amp; up</span>
+                </div>
+                <div class="rating-item">
+                  <span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+                  <span class="up">&amp; up</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Clear All -->
+            <button class="clear-filters">&#10005; Clear All Filters</button>
+
+          </aside>
+
+          <!-- ===== MAIN PRODUCTS ===== -->
+          <div class="shop-main">
+
+            <!-- Toolbar -->
+            <div class="shop-toolbar">
+              <div class="shop-result-count">
+                Showing <strong>1-12</strong> of <strong>55</strong> products
+              </div>
+              <div class="shop-toolbar-right">
+                <div class="shop-sort">
+                  <select>
+                    <option>Sort by: Popularity</option>
+                    <option>Sort by: Newest</option>
+                    <option>Sort by: Price (Low to High)</option>
+                    <option>Sort by: Price (High to Low)</option>
+                    <option>Sort by: Rating</option>
+                  </select>
+                </div>
+                <div class="shop-view-toggle">
+                  <button class="active" title="Grid View">&#9638;</button>
+                  <button title="List View">&#9776;</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Filters -->
+            <div class="active-filters">
+              <span class="active-filters-label">Active:</span>
+              <span class="active-filter-tag">Age: 5-6 <span class="remove">&#10005;</span></span>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="shop-products-grid">
+
+              <!-- Product 1: Construction -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#FFD54F,#FF6B35);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#128679;</span>
+                  </div>
+                  <span class="product-card-badge bestseller">Bestseller</span>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">FunGO / Games2Go</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Construction Box</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <span class="count">(48)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price-from">From</span>
+                    <span class="price">$15.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+                </div>
+              </div>
+
+              <!-- Product 2: Dino Adventure -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#81C784,#388E3C);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#129430;</span>
+                  </div>
+                  <span class="product-card-badge new">New</span>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">FunGO / Games2Go</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Dino Adventure Box</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <span class="count">(36)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price-from">From</span>
+                    <span class="price">$15.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+                </div>
+              </div>
+
+              <!-- Product 3: Rescue Team -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#EF5350,#C62828);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#128659;</span>
+                  </div>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">Rescue Team</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Rescue Team Box</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                    <span class="count">(29)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price-from">From</span>
+                    <span class="price">$15.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+                </div>
+              </div>
+
+              <!-- Product 4: Star World -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#7E57C2,#311B92);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#11088;</span>
+                  </div>
+                  <span class="product-card-badge sale">-10%</span>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">FunGO / Games2Go</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Star World Box</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <span class="count">(52)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price">$13.50</span>
+                    <span class="price-old">$15.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+                </div>
+              </div>
+
+              <!-- Product 5: Robo Police -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#78909C,#37474F);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#129302;</span>
+                  </div>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">FunGO / Games2Go</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Robo Police Box</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                    <span class="count">(18)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price-from">From</span>
+                    <span class="price">$15.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+                </div>
+              </div>
+
+              <!-- Product 6: Biene Maja -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#FFE082,#F9A825);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#127804;</span>
+                  </div>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">Biene Maja</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Biene Maja Box</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <span class="count">(41)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price-from">From</span>
+                    <span class="price">$15.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+                </div>
+              </div>
+
+              <!-- Product 7: Drawing Kit -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#F48FB1,#E91E63);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#127912;</span>
+                  </div>
+                  <span class="product-card-badge new">New</span>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">Drawing</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Creative Drawing Box</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <span class="count">(22)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price-from">From</span>
+                    <span class="price">$12.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+                </div>
+              </div>
+
+              <!-- Product 8: Riddle Fun -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#80DEEA,#00838F);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#129514;</span>
+                  </div>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">Riddle Fun</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Riddle Fun Box</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                    <span class="count">(15)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price-from">From</span>
+                    <span class="price">$14.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+                </div>
+              </div>
+
+              <!-- Product 9: Aviation -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#90CAF9,#1565C0);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#9992;</span>
+                  </div>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">FunGO / Games2Go</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Aviation Adventure Box</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                    <span class="count">(12)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price-from">From</span>
+                    <span class="price">$15.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+                </div>
+              </div>
+
+              <!-- Product 10: Farm -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#A5D6A7,#2E7D32);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#127806;</span>
+                  </div>
+                  <span class="product-card-badge sale">-15%</span>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">FunGO / Games2Go</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Farm Friends Box</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <span class="count">(33)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price">$12.75</span>
+                    <span class="price-old">$15.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+                </div>
+              </div>
+
+              <!-- Product 11: Crazy Cube Accessory -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#CE93D8,#6A1B9A);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#127922;</span>
+                  </div>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">Accessories</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Crazy Cube &ndash; Wood Puzzle</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                    <span class="count">(9)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price">$2.00</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Add to Cart</a>
+                </div>
+              </div>
+
+              <!-- Product 12: Coloured Pencils -->
+              <div class="product-card">
+                <div class="product-card-image">
+                  <div style="width:100%;height:100%;background:linear-gradient(135deg,#FFCC80,#EF6C00);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:3.5rem;">&#9997;</span>
+                  </div>
+                  <div class="product-card-actions">
+                    <button title="Add to Wishlist">&#9825;</button>
+                    <button title="Quick View">&#128065;</button>
+                  </div>
+                </div>
+                <div class="product-card-body">
+                  <div class="product-card-category">Drawing</div>
+                  <h3 class="product-card-title"><a href="03-product.html">Coloured Pencils Set (12x)</a></h3>
+                  <div class="product-card-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <span class="count">(27)</span>
+                  </div>
+                  <div class="product-card-price">
+                    <span class="price">$0.10</span>
+                  </div>
+                </div>
+                <div class="product-card-footer">
+                  <a href="03-product.html" class="btn btn-primary btn-sm">Add to Cart</a>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+              <a href="#">&laquo;</a>
+              <span class="active">1</span>
+              <a href="#">2</a>
+              <a href="#">3</a>
+              <span class="dots">&hellip;</span>
+              <a href="#">5</a>
+              <a href="#">&raquo;</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEWSLETTER SECTION ===== -->
+    <section class="newsletter-bar">
+      <div class="container">
+        <div>
+          <h3>Stay in the Loop!</h3>
+          <p>Subscribe to get exclusive deals, new box announcements, and 10% off your first order.</p>
+        </div>
+        <form class="newsletter-form">
+          <input type="email" class="form-input" placeholder="Enter your email address">
+          <button type="submit" class="btn">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <div class="logo-icon">G</div>
+            <div class="logo-text">Game<span style="color:var(--color-primary);">Box</span></div>
+          </div>
+          <p>Curated themed gift boxes for kids filled with building blocks, creative supplies, and fun extras. Making every gift unforgettable.</p>
+          <div class="footer-social">
+            <a href="#" title="Facebook">Fb</a>
+            <a href="#" title="Instagram">Ig</a>
+            <a href="#" title="TikTok">Tk</a>
+            <a href="#" title="YouTube">Yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="01-home.html">Home</a>
+            <a href="02-shop.html">Shop All</a>
+            <a href="05-gift-finder.html">Gift Finder</a>
+            <a href="04-how-it-works.html">How It Works</a>
+            <a href="06-about.html">About Us</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Customer Service</h4>
+          <div class="footer-links">
+            <a href="08-faq.html">FAQ / Help Center</a>
+            <a href="09-shipping.html">Shipping &amp; Delivery</a>
+            <a href="10-returns.html">Returns &amp; Refunds</a>
+            <a href="07-contact.html">Contact Us</a>
+            <a href="16-account.html">My Account</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <div class="footer-links">
+            <a href="11-privacy.html">Privacy Policy</a>
+            <a href="12-terms.html">Terms &amp; Conditions</a>
+            <a href="13-impressum.html">Imprint (Impressum)</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">&copy; 2026 GameBox. All rights reserved.</div>
+        <div class="footer-payments">
+          <div class="payment-icon">VISA</div>
+          <div class="payment-icon">MC</div>
+          <div class="payment-icon">PAYPAL</div>
+          <div class="payment-icon">KLARNA</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
