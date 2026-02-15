@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ / Help Center - GameBox</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .faq-sidebar {
+      position: sticky;
+      top: 140px;
+    }
+
+    .faq-nav {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .faq-nav h4 {
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--color-border-light);
+    }
+
+    .faq-nav a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      border-radius: var(--radius-sm);
+      margin-bottom: 2px;
+      transition: all var(--transition-fast);
+    }
+
+    .faq-nav a:hover,
+    .faq-nav a.active {
+      background-color: rgba(255,107,53,0.08);
+      color: var(--color-primary);
+    }
+
+    .faq-nav a .nav-icon {
+      font-size: 1rem;
+    }
+
+    .faq-category {
+      margin-bottom: 48px;
+    }
+
+    .faq-category-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .faq-category-header .cat-icon {
+      width: 48px;
+      height: 48px;
+      background-color: var(--color-bg-light);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .faq-category-header h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0;
+    }
+
+    .faq-search-bar {
+      max-width: 600px;
+      margin: 0 auto 48px;
+    }
+
+    .faq-search-bar .search-input-wrapper .form-input {
+      padding: 16px 20px 16px 52px;
+      font-size: 1rem;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .faq-contact-banner {
+      background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-light));
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .faq-contact-banner h3 {
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .faq-contact-banner p {
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ==================== TOP BAR ==================== -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-left">
+        <span>&#9993; support@gamebox.de</span>
+        <span>&#9742; +49 123 456 7890</span>
+        <span>&#128666; Free Shipping over $150</span>
+      </div>
+      <div class="top-bar-right">
+        <select><option>English</option><option>Deutsch</option></select>
+        <select><option>USD ($)</option><option>EUR (&euro;)</option></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="container">
+      <a href="01-home.html" class="logo">
+        <div class="logo-icon">G</div>
+        <div class="logo-text">Game<span>Box</span></div>
+      </a>
+      <nav class="main-nav">
+        <a href="01-home.html">Home</a>
+        <a href="02-shop.html">Shop</a>
+        <a href="04-how-it-works.html">How It Works</a>
+        <a href="05-gift-finder.html">Gift Finder</a>
+        <a href="06-about.html">About Us</a>
+        <a href="07-contact.html">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="header-action-btn" title="Search">&#128269;</button>
+        <button class="header-action-btn" title="Account">&#128100;</button>
+        <button class="header-action-btn" title="Wishlist">&#9825;<span class="badge-count">2</span></button>
+        <button class="header-action-btn" title="Cart">&#128722;<span class="badge-count">3</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN ==================== -->
+  <main class="main-content">
+
+    <div class="page-banner">
+      <div class="container">
+        <h1>FAQ / Help Center</h1>
+        <div class="breadcrumb">
+          <a href="01-home.html">Home</a>
+          <span class="separator">/</span>
+          <span class="current">FAQ</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+
+        <!-- Search -->
+        <div class="faq-search-bar">
+          <div class="search-input-wrapper">
+            <span class="search-icon">&#128269;</span>
+            <input type="text" class="form-input" placeholder="Search for answers...">
+          </div>
+        </div>
+
+        <div class="faq-layout">
+
+          <!-- Sidebar Nav -->
+          <aside class="faq-sidebar">
+            <div class="faq-nav">
+              <h4>Categories</h4>
+              <a href="#ordering" class="active"><span class="nav-icon">&#128722;</span> Ordering</a>
+              <a href="#shipping"><span class="nav-icon">&#128666;</span> Shipping</a>
+              <a href="#returns"><span class="nav-icon">&#128259;</span> Returns</a>
+              <a href="#products"><span class="nav-icon">&#127873;</span> Products</a>
+              <a href="#payment"><span class="nav-icon">&#128179;</span> Payment</a>
+              <a href="#account"><span class="nav-icon">&#128100;</span> Account</a>
+            </div>
+          </aside>
+
+          <!-- FAQ Content -->
+          <div class="faq-main">
+
+            <!-- Ordering -->
+            <div id="ordering" class="faq-category">
+              <div class="faq-category-header">
+                <div class="cat-icon">&#128722;</div>
+                <h3>Ordering</h3>
+              </div>
+              <div class="accordion-item active">
+                <div class="accordion-header"><span>How do I place an order?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Browse our shop, select a themed box, customize it (size, color, add-ons), add it to your cart, and proceed to checkout. You can pay with credit card, PayPal, or Klarna.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>Can I change or cancel my order?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Orders can be modified or cancelled within 2 hours of placing them. After that, the order enters fulfillment. Contact us immediately at support@gamebox.de.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>Is there a minimum order amount?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">No minimum order is required. However, free shipping is available on orders over $150. Standard shipping fees apply to smaller orders.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>Can I order as a guest without an account?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Yes, guest checkout is available. However, creating an account lets you track orders, save wishlists, and reorder faster.</div>
+              </div>
+            </div>
+
+            <!-- Shipping -->
+            <div id="shipping" class="faq-category">
+              <div class="faq-category-header">
+                <div class="cat-icon">&#128666;</div>
+                <h3>Shipping &amp; Delivery</h3>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>How long does shipping take?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Standard delivery within Germany: 3&ndash;5 business days. EU delivery: 5&ndash;7 business days. Express delivery (1&ndash;2 days) is available for an additional fee.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>Do you ship internationally?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">We currently ship to all EU countries. We&rsquo;re working on expanding to other regions. Check our <a href="09-shipping.html" style="color:var(--color-primary);">Shipping page</a> for the full list.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>How can I track my order?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Once shipped, you&rsquo;ll receive a tracking email with a link. You can also check order status in your My Account dashboard.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>Can I ship to a different address (as a gift)?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Absolutely! Enter a different shipping address at checkout. We&rsquo;ll include your greeting card and won&rsquo;t include any pricing information in the package.</div>
+              </div>
+            </div>
+
+            <!-- Returns -->
+            <div id="returns" class="faq-category">
+              <div class="faq-category-header">
+                <div class="cat-icon">&#128259;</div>
+                <h3>Returns &amp; Refunds</h3>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>What is your return policy?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">We offer a 30-day return policy from the date of delivery. Items must be unused and in their original packaging. See our <a href="10-returns.html" style="color:var(--color-primary);">Returns page</a> for full details.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>How do I initiate a return?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Contact us at support@gamebox.de with your order number. We&rsquo;ll send you a return label and instructions. Returns within Germany are free.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>When will I receive my refund?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Refunds are processed within 5&ndash;7 business days after we receive the returned item. The refund goes back to your original payment method.</div>
+              </div>
+            </div>
+
+            <!-- Products -->
+            <div id="products" class="faq-category">
+              <div class="faq-category-header">
+                <div class="cat-icon">&#127873;</div>
+                <h3>Products &amp; Customization</h3>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>What&rsquo;s inside a GameBox?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Each box contains themed items like building blocks, mini figures, stickers, activity booklets, and fun extras. The exact contents depend on the theme and size you choose.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>Are the toys safe for children?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">All products are CE certified and EN 71 compliant. We use non-toxic materials and ensure every item is age-appropriate for the listed age range.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>Can I create a fully custom box?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">You can customize size, color theme, and add extras. For fully bespoke boxes (corporate gifts, events), contact us for a custom quote.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>Do you offer corporate / bulk orders?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Yes! We offer volume discounts for bulk orders. Contact us via the <a href="07-contact.html" style="color:var(--color-primary);">Contact page</a> with your requirements and we&rsquo;ll provide a custom quote.</div>
+              </div>
+            </div>
+
+            <!-- Payment -->
+            <div id="payment" class="faq-category">
+              <div class="faq-category-header">
+                <div class="cat-icon">&#128179;</div>
+                <h3>Payment</h3>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>What payment methods do you accept?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">We accept Visa, Mastercard, PayPal, Klarna (pay later / installments), and Sofort&uuml;berweisung (instant bank transfer). All payments are SSL-encrypted.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>Is it safe to pay on your website?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Absolutely. We use industry-standard SSL encryption and PCI-compliant payment processing. Your payment details are never stored on our servers.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>Can I pay in installments?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Yes, through Klarna you can split your payment into 3 interest-free installments, or pay within 30 days.</div>
+              </div>
+            </div>
+
+            <!-- Account -->
+            <div id="account" class="faq-category">
+              <div class="faq-category-header">
+                <div class="cat-icon">&#128100;</div>
+                <h3>My Account</h3>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>How do I create an account?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Click the account icon in the header or visit the <a href="16-account.html" style="color:var(--color-primary);">My Account</a> page. You can register with your email and create a password, or sign in during checkout.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>I forgot my password. How do I reset it?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">On the login page, click &ldquo;Forgot Password?&rdquo; and enter your email. You&rsquo;ll receive a link to create a new password within minutes.</div>
+              </div>
+              <div class="accordion-item">
+                <div class="accordion-header"><span>How do I delete my account?</span><span class="icon">&#9660;</span></div>
+                <div class="accordion-body">Contact us at support@gamebox.de and we&rsquo;ll process your account deletion request within 48 hours, in compliance with GDPR regulations.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Contact Banner -->
+        <div class="faq-contact-banner mt-5">
+          <div>
+            <h3>Still Have Questions?</h3>
+            <p>Our support team is happy to help. Reach out and we&rsquo;ll respond within 24 hours.</p>
+          </div>
+          <a href="07-contact.html" class="btn btn-primary btn-lg">Contact Support</a>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="newsletter-bar">
+      <div class="container">
+        <div>
+          <h3>Stay in the Loop!</h3>
+          <p>Subscribe to get exclusive deals, new box announcements, and 10% off your first order.</p>
+        </div>
+        <form class="newsletter-form">
+          <input type="email" class="form-input" placeholder="Enter your email address">
+          <button type="submit" class="btn">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo"><div class="logo-icon">G</div><div class="logo-text">Game<span style="color:var(--color-primary);">Box</span></div></div>
+          <p>Curated themed gift boxes for kids filled with building blocks, creative supplies, and fun extras.</p>
+          <div class="footer-social"><a href="#">Fb</a><a href="#">Ig</a><a href="#">Tk</a><a href="#">Yt</a></div>
+        </div>
+        <div class="footer-col"><h4>Quick Links</h4><div class="footer-links"><a href="01-home.html">Home</a><a href="02-shop.html">Shop All</a><a href="05-gift-finder.html">Gift Finder</a><a href="04-how-it-works.html">How It Works</a><a href="06-about.html">About Us</a></div></div>
+        <div class="footer-col"><h4>Customer Service</h4><div class="footer-links"><a href="08-faq.html">FAQ / Help Center</a><a href="09-shipping.html">Shipping &amp; Delivery</a><a href="10-returns.html">Returns &amp; Refunds</a><a href="07-contact.html">Contact Us</a><a href="16-account.html">My Account</a></div></div>
+        <div class="footer-col"><h4>Legal</h4><div class="footer-links"><a href="11-privacy.html">Privacy Policy</a><a href="12-terms.html">Terms &amp; Conditions</a><a href="13-impressum.html">Imprint (Impressum)</a></div></div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">&copy; 2026 GameBox. All rights reserved.</div>
+        <div class="footer-payments"><div class="payment-icon">VISA</div><div class="payment-icon">MC</div><div class="payment-icon">PAYPAL</div><div class="payment-icon">KLARNA</div></div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -21,7 +21,7 @@
 
 ## Phase 3: Support & Policy Pages
 
-- [ ] **Task 10:** Create `pages/08-faq.html` - FAQ / Help Center with categorized accordion questions
+- [x] **Task 10:** Create `pages/08-faq.html` - FAQ / Help Center with categorized accordion questions ✅
 - [ ] **Task 11:** Create `pages/09-shipping.html` - Shipping & Delivery info with zones, costs table, tracking
 - [ ] **Task 12:** Create `pages/10-returns.html` - Returns & Refunds policy page
 - [ ] **Task 13:** Create `pages/11-privacy.html` - Privacy Policy (GDPR compliant)
@@ -46,9 +46,9 @@
 |---|---|---|
 | Phase 1: Foundation | Tasks 1-2 | Complete (2/2) |
 | Phase 2: Core Pages | Tasks 3-9 | Complete (7/7) |
-| Phase 3: Support Pages | Tasks 10-15 | Not Started |
+| Phase 3: Support Pages | Tasks 10-15 | In Progress (1/6) |
 | Phase 4: WooCommerce | Tasks 16-18 | Not Started |
 | Phase 5: Utility | Task 19 | Not Started |
 
 **Total Tasks:** 19
-**Completed:** 9 / 19
+**Completed:** 10 / 19
