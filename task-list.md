@@ -15,7 +15,7 @@
 - [x] **Task 4:** Create `pages/02-shop.html` - Shop page with product grid, category filters, sorting, sidebar ✅
 - [x] **Task 5:** Create `pages/03-product.html` - Single product page with composite product selector, image gallery, add-ons, greeting card, price calculator ✅
 - [x] **Task 6:** Create `pages/04-how-it-works.html` - Step-by-step guide page (4 steps with icons and descriptions) ✅
-- [ ] **Task 7:** Create `pages/05-gift-finder.html` - Interactive gift finder with age/theme/budget filters and recommendations
+- [x] **Task 7:** Create `pages/05-gift-finder.html` - Interactive gift finder with age/theme/budget filters and recommendations ✅
 - [ ] **Task 8:** Create `pages/06-about.html` - About Us page with brand story, mission, values, USPs
 - [ ] **Task 9:** Create `pages/07-contact.html` - Contact page with form, FAQ accordion, company info
 
@@ -45,10 +45,10 @@
 | Phase | Tasks | Status |
 |---|---|---|
 | Phase 1: Foundation | Tasks 1-2 | Complete (2/2) |
-| Phase 2: Core Pages | Tasks 3-9 | In Progress (4/7) |
+| Phase 2: Core Pages | Tasks 3-9 | In Progress (5/7) |
 | Phase 3: Support Pages | Tasks 10-15 | Not Started |
 | Phase 4: WooCommerce | Tasks 16-18 | Not Started |
 | Phase 5: Utility | Task 19 | Not Started |
 
 **Total Tasks:** 19
-**Completed:** 6 / 19
+**Completed:** 7 / 19
