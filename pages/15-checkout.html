@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - GameBox</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    /* ========== CHECKOUT PAGE STYLES ========== */
+
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* --- Checkout Steps Indicator --- */
+    .checkout-steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 24px 0;
+      margin-bottom: 8px;
+    }
+
+    .checkout-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .checkout-step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      background-color: var(--color-bg-gray);
+      color: var(--color-text-muted);
+      transition: all var(--transition-normal);
+    }
+
+    .checkout-step.active .checkout-step-num {
+      background-color: var(--color-primary);
+      color: #fff;
+    }
+
+    .checkout-step.completed .checkout-step-num {
+      background-color: var(--color-accent);
+      color: #fff;
+    }
+
+    .checkout-step-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .checkout-step.active .checkout-step-label {
+      color: var(--color-secondary);
+    }
+
+    .checkout-step.completed .checkout-step-label {
+      color: var(--color-accent-dark);
+    }
+
+    .checkout-step-connector {
+      width: 60px;
+      height: 2px;
+      background-color: var(--color-border);
+      margin: 0 16px;
+    }
+
+    .checkout-step-connector.completed {
+      background-color: var(--color-accent);
+    }
+
+    /* --- Checkout Section Cards --- */
+    .checkout-section {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .checkout-section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 28px;
+      border-bottom: 2px solid var(--color-border-light);
+    }
+
+    .checkout-section-num {
+      width: 32px;
+      height: 32px;
+      background-color: var(--color-primary);
+      color: #fff;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .checkout-section-header h3 {
+      font-size: 1.15rem;
+      color: var(--color-secondary);
+      margin-bottom: 0;
+    }
+
+    .checkout-section-body {
+      padding: 28px;
+    }
+
+    /* --- Form Grid --- */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-full {
+      grid-column: 1 / -1;
+    }
+
+    /* --- Guest / Login Toggle --- */
+    .guest-login-toggle {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .toggle-option {
+      flex: 1;
+      padding: 16px 20px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .toggle-option:hover {
+      border-color: var(--color-primary-light);
+    }
+
+    .toggle-option.active {
+      border-color: var(--color-primary);
+      background-color: rgba(255, 107, 53, 0.05);
+    }
+
+    .toggle-option h5 {
+      font-size: 0.95rem;
+      color: var(--color-secondary);
+      margin-bottom: 4px;
+    }
+
+    .toggle-option p {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0;
+    }
+
+    /* --- Shipping Methods --- */
+    .shipping-method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .shipping-method {
+      padding: 20px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-align: center;
+      position: relative;
+    }
+
+    .shipping-method:hover {
+      border-color: var(--color-primary-light);
+    }
+
+    .shipping-method.active {
+      border-color: var(--color-primary);
+      background-color: rgba(255, 107, 53, 0.04);
+    }
+
+    .shipping-method-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .shipping-method-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--color-secondary);
+      margin-bottom: 4px;
+    }
+
+    .shipping-method-time {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+    }
+
+    .shipping-method-price {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--color-primary);
+    }
+
+    .shipping-method-price.free {
+      color: var(--color-accent-dark);
+    }
+
+    .shipping-method .recommended-tag {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background-color: var(--color-accent);
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+    }
+
+    /* --- Payment Methods --- */
+    .payment-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .payment-method:hover {
+      border-color: var(--color-primary-light);
+    }
+
+    .payment-method.active {
+      border-color: var(--color-primary);
+      background-color: rgba(255, 107, 53, 0.04);
+    }
+
+    .payment-method input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .payment-method-icon {
+      width: 48px;
+      height: 32px;
+      background-color: var(--color-bg-gray);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+    }
+
+    .payment-method-info {
+      flex: 1;
+    }
+
+    .payment-method-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--color-secondary);
+    }
+
+    .payment-method-desc {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    /* --- Card Form (inside payment) --- */
+    .card-form {
+      margin-top: 16px;
+      padding: 20px;
+      background-color: var(--color-bg-light);
+      border-radius: var(--radius-md);
+    }
+
+    /* --- Order Notes --- */
+    .order-notes textarea {
+      min-height: 90px;
+    }
+
+    /* --- Right Sidebar: Order Review --- */
+    .checkout-sidebar {
+      position: sticky;
+      top: 140px;
+    }
+
+    .order-review {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .order-review-header {
+      background-color: var(--color-secondary);
+      padding: 18px 28px;
+    }
+
+    .order-review-header h3 {
+      color: #fff;
+      font-size: 1.15rem;
+      margin-bottom: 0;
+    }
+
+    .order-review-body {
+      padding: 24px 28px;
+    }
+
+    /* --- Order Items List --- */
+    .order-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .order-item:last-child {
+      border-bottom: none;
+    }
+
+    .order-item-image {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .order-item-image-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .order-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .order-item-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-secondary);
+      line-height: 1.3;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .order-item-meta {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    .order-item-price {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--color-text);
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    /* --- Order Totals --- */
+    .order-totals {
+      margin-top: 8px;
+      padding-top: 16px;
+      border-top: 2px solid var(--color-border-light);
+    }
+
+    .order-totals-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+    }
+
+    .order-totals-row .value {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .order-totals-row .value.discount {
+      color: var(--color-accent-dark);
+    }
+
+    .order-totals-row.total {
+      padding-top: 14px;
+      margin-top: 8px;
+      border-top: 2px solid var(--color-border-light);
+    }
+
+    .order-totals-row.total .label {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-secondary);
+    }
+
+    .order-totals-row.total .value {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--color-primary);
+    }
+
+    .order-vat-note {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      text-align: right;
+      margin-top: 2px;
+    }
+
+    /* --- Terms Agreement --- */
+    .terms-agree {
+      margin: 20px 0 16px;
+      padding: 16px;
+      background-color: var(--color-bg-light);
+      border-radius: var(--radius-md);
+    }
+
+    .terms-agree label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    .terms-agree input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-primary);
+      margin-top: 2px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .terms-agree a {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .terms-agree a:hover {
+      text-decoration: underline;
+    }
+
+    /* --- Place Order Button --- */
+    .place-order-btn {
+      width: 100%;
+      padding: 18px 28px;
+      font-size: 1.1rem;
+    }
+
+    /* --- Secure Checkout Note --- */
+    .secure-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-top: 14px;
+    }
+
+    /* --- Edit Cart Link --- */
+    .order-review-footer {
+      padding: 14px 28px;
+      border-top: 1px solid var(--color-border-light);
+      text-align: center;
+    }
+
+    .order-review-footer a {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+    }
+
+    .order-review-footer a:hover {
+      color: var(--color-primary);
+    }
+
+    /* --- Checkout Trust Row --- */
+    .checkout-trust-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .checkout-trust-item {
+      text-align: center;
+      padding: 14px 8px;
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .checkout-trust-item .icon {
+      font-size: 1.3rem;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .checkout-trust-item span:last-child {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      line-height: 1.3;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ==================== TOP BAR ==================== -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-left">
+        <span>&#9993; support@gamebox.de</span>
+        <span>&#9742; +49 123 456 7890</span>
+        <span>&#128666; Free Shipping over $150</span>
+      </div>
+      <div class="top-bar-right">
+        <select>
+          <option>English</option>
+          <option>Deutsch</option>
+          <option>Fran&ccedil;ais</option>
+        </select>
+        <select>
+          <option>USD ($)</option>
+          <option>EUR (&euro;)</option>
+          <option>JPY (&yen;)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="container">
+      <a href="01-home.html" class="logo">
+        <div class="logo-icon">G</div>
+        <div class="logo-text">Game<span>Box</span></div>
+      </a>
+
+      <nav class="main-nav">
+        <a href="01-home.html">Home</a>
+        <a href="02-shop.html">Shop</a>
+        <a href="04-how-it-works.html">How It Works</a>
+        <a href="05-gift-finder.html">Gift Finder</a>
+        <a href="06-about.html">About Us</a>
+        <a href="07-contact.html">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="header-action-btn" title="Search">&#128269;</button>
+        <button class="header-action-btn" title="Account">&#128100;</button>
+        <button class="header-action-btn" title="Wishlist">
+          &#9825;
+          <span class="badge-count">2</span>
+        </button>
+        <button class="header-action-btn" title="Cart">
+          &#128722;
+          <span class="badge-count">3</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- ===== PAGE BANNER ===== -->
+    <div class="page-banner">
+      <div class="container">
+        <h1>&#128179; Checkout</h1>
+        <div class="breadcrumb">
+          <a href="01-home.html">Home</a>
+          <span class="separator">/</span>
+          <a href="14-cart.html">Cart</a>
+          <span class="separator">/</span>
+          <span class="current">Checkout</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CHECKOUT STEPS ===== -->
+    <div class="container">
+      <div class="checkout-steps">
+        <div class="checkout-step completed">
+          <span class="checkout-step-num">&#10003;</span>
+          <span class="checkout-step-label">Cart</span>
+        </div>
+        <div class="checkout-step-connector completed"></div>
+        <div class="checkout-step active">
+          <span class="checkout-step-num">2</span>
+          <span class="checkout-step-label">Checkout</span>
+        </div>
+        <div class="checkout-step-connector"></div>
+        <div class="checkout-step">
+          <span class="checkout-step-num">3</span>
+          <span class="checkout-step-label">Confirmation</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CHECKOUT CONTENT ===== -->
+    <section class="section" style="padding-top:24px;">
+      <div class="container">
+        <div class="checkout-layout">
+
+          <!-- ===== LEFT: Checkout Form ===== -->
+          <div class="checkout-form">
+
+            <!-- Guest / Login Toggle -->
+            <div class="checkout-section">
+              <div class="checkout-section-body" style="padding-top:20px;">
+                <div class="guest-login-toggle">
+                  <div class="toggle-option active">
+                    <h5>&#128100; Guest Checkout</h5>
+                    <p>Continue without an account</p>
+                  </div>
+                  <div class="toggle-option">
+                    <h5>&#128272; Login</h5>
+                    <p>Already have an account?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 1: Billing Details -->
+            <div class="checkout-section">
+              <div class="checkout-section-header">
+                <span class="checkout-section-num">1</span>
+                <h3>Billing Details</h3>
+              </div>
+              <div class="checkout-section-body">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">First Name <span class="required">*</span></label>
+                    <input type="text" class="form-input" placeholder="Max">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Last Name <span class="required">*</span></label>
+                    <input type="text" class="form-input" placeholder="Mustermann">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Company Name <span style="font-weight:400;color:var(--color-text-muted);">(optional)</span></label>
+                  <input type="text" class="form-input" placeholder="Company GmbH">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Country / Region <span class="required">*</span></label>
+                  <select class="form-select">
+                    <option>Germany</option>
+                    <option>Austria</option>
+                    <option>Switzerland</option>
+                    <option>Netherlands</option>
+                    <option>France</option>
+                    <option>Belgium</option>
+                    <option>Other EU</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Street Address <span class="required">*</span></label>
+                  <input type="text" class="form-input" placeholder="Musterstra&szlig;e 123" style="margin-bottom:10px;">
+                  <input type="text" class="form-input" placeholder="Apartment, suite, unit, etc. (optional)">
+                </div>
+
+                <div class="form-row-3">
+                  <div class="form-group">
+                    <label class="form-label">Postcode / ZIP <span class="required">*</span></label>
+                    <input type="text" class="form-input" placeholder="10115">
+                  </div>
+                  <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">Town / City <span class="required">*</span></label>
+                    <input type="text" class="form-input" placeholder="Berlin">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Phone <span class="required">*</span></label>
+                    <input type="tel" class="form-input" placeholder="+49 170 1234567">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Email Address <span class="required">*</span></label>
+                    <input type="email" class="form-input" placeholder="max@example.com">
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:8px;">
+                  <label class="form-checkbox">
+                    <input type="checkbox">
+                    <span>Create an account for faster checkout next time</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: Shipping Address -->
+            <div class="checkout-section">
+              <div class="checkout-section-header">
+                <span class="checkout-section-num">2</span>
+                <h3>Shipping Address</h3>
+              </div>
+              <div class="checkout-section-body">
+                <div class="form-group" style="margin-bottom:20px;">
+                  <label class="form-checkbox">
+                    <input type="checkbox" checked>
+                    <span>Ship to the same address as billing</span>
+                  </label>
+                </div>
+
+                <div style="opacity:0.5;">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">First Name</label>
+                      <input type="text" class="form-input" disabled placeholder="Same as billing">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Last Name</label>
+                      <input type="text" class="form-input" disabled placeholder="Same as billing">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Street Address</label>
+                    <input type="text" class="form-input" disabled placeholder="Same as billing">
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Postcode / ZIP</label>
+                      <input type="text" class="form-input" disabled placeholder="Same as billing">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Town / City</label>
+                      <input type="text" class="form-input" disabled placeholder="Same as billing">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 3: Shipping Method -->
+            <div class="checkout-section">
+              <div class="checkout-section-header">
+                <span class="checkout-section-num">3</span>
+                <h3>Shipping Method</h3>
+              </div>
+              <div class="checkout-section-body">
+                <div class="shipping-method-grid">
+                  <div class="shipping-method">
+                    <div class="shipping-method-icon">&#128230;</div>
+                    <div class="shipping-method-name">Standard</div>
+                    <div class="shipping-method-time">3&ndash;5 business days</div>
+                    <div class="shipping-method-price">$4.95</div>
+                  </div>
+                  <div class="shipping-method active">
+                    <span class="recommended-tag">Recommended</span>
+                    <div class="shipping-method-icon">&#128666;</div>
+                    <div class="shipping-method-name">Express</div>
+                    <div class="shipping-method-time">1&ndash;2 business days</div>
+                    <div class="shipping-method-price">$9.95</div>
+                  </div>
+                  <div class="shipping-method">
+                    <div class="shipping-method-icon">&#127970;</div>
+                    <div class="shipping-method-name">Pick-up Point</div>
+                    <div class="shipping-method-time">3&ndash;5 business days</div>
+                    <div class="shipping-method-price free">FREE</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 4: Payment Method -->
+            <div class="checkout-section">
+              <div class="checkout-section-header">
+                <span class="checkout-section-num">4</span>
+                <h3>Payment Method</h3>
+              </div>
+              <div class="checkout-section-body">
+                <div class="payment-methods">
+
+                  <!-- Credit Card -->
+                  <div class="payment-method active">
+                    <input type="radio" name="payment" checked>
+                    <div class="payment-method-icon">CARD</div>
+                    <div class="payment-method-info">
+                      <div class="payment-method-name">Credit / Debit Card</div>
+                      <div class="payment-method-desc">Visa, Mastercard, American Express</div>
+                    </div>
+                  </div>
+
+                  <!-- Card Input Fields -->
+                  <div class="card-form">
+                    <div class="form-group">
+                      <label class="form-label">Card Number <span class="required">*</span></label>
+                      <input type="text" class="form-input" placeholder="1234 5678 9012 3456">
+                    </div>
+                    <div class="form-row-3">
+                      <div class="form-group">
+                        <label class="form-label">Expiry <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="MM / YY">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">CVC <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="123">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Name on Card <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="Max Mustermann">
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PayPal -->
+                  <div class="payment-method">
+                    <input type="radio" name="payment">
+                    <div class="payment-method-icon">PAYPAL</div>
+                    <div class="payment-method-info">
+                      <div class="payment-method-name">PayPal</div>
+                      <div class="payment-method-desc">You will be redirected to PayPal</div>
+                    </div>
+                  </div>
+
+                  <!-- Klarna -->
+                  <div class="payment-method">
+                    <input type="radio" name="payment">
+                    <div class="payment-method-icon">KLARNA</div>
+                    <div class="payment-method-info">
+                      <div class="payment-method-name">Klarna &ndash; Buy Now, Pay Later</div>
+                      <div class="payment-method-desc">Pay within 30 days, no interest</div>
+                    </div>
+                  </div>
+
+                  <!-- Bank Transfer -->
+                  <div class="payment-method">
+                    <input type="radio" name="payment">
+                    <div class="payment-method-icon">BANK</div>
+                    <div class="payment-method-info">
+                      <div class="payment-method-name">Direct Bank Transfer (SEPA)</div>
+                      <div class="payment-method-desc">Transfer directly from your bank account</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 5: Order Notes -->
+            <div class="checkout-section">
+              <div class="checkout-section-header">
+                <span class="checkout-section-num">5</span>
+                <h3>Order Notes <span style="font-weight:400;font-size:0.85rem;color:var(--color-text-muted);">(optional)</span></h3>
+              </div>
+              <div class="checkout-section-body order-notes">
+                <div class="form-group" style="margin-bottom:12px;">
+                  <textarea class="form-textarea" placeholder="Special instructions for delivery, gift messages, or other notes..."></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-checkbox">
+                    <input type="checkbox">
+                    <span>This order is a gift &mdash; include a packing slip without prices</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ===== RIGHT: Order Review Sidebar ===== -->
+          <div class="checkout-sidebar">
+            <div class="order-review">
+              <div class="order-review-header">
+                <h3>&#128179; Your Order</h3>
+              </div>
+              <div class="order-review-body">
+
+                <!-- Order Items -->
+                <div class="order-item">
+                  <div class="order-item-image">
+                    <div class="order-item-image-inner" style="background:linear-gradient(135deg,#FFD54F,#FF6B35);">
+                      <span>&#128679;</span>
+                    </div>
+                  </div>
+                  <div class="order-item-info">
+                    <div class="order-item-name">Construction Box &ndash; Build &amp; Play</div>
+                    <div class="order-item-meta">Medium &middot; Orange &middot; Qty: 2</div>
+                  </div>
+                  <div class="order-item-price">$50.00</div>
+                </div>
+
+                <div class="order-item">
+                  <div class="order-item-image">
+                    <div class="order-item-image-inner" style="background:linear-gradient(135deg,#81C784,#388E3C);">
+                      <span>&#129430;</span>
+                    </div>
+                  </div>
+                  <div class="order-item-info">
+                    <div class="order-item-name">Dino Adventure Box</div>
+                    <div class="order-item-meta">Large &middot; Green &middot; Qty: 1</div>
+                  </div>
+                  <div class="order-item-price">$35.00</div>
+                </div>
+
+                <div class="order-item">
+                  <div class="order-item-image">
+                    <div class="order-item-image-inner" style="background:linear-gradient(135deg,#E1BEE7,#AB47BC);">
+                      <span>&#127880;</span>
+                    </div>
+                  </div>
+                  <div class="order-item-info">
+                    <div class="order-item-name">Gift Wrapping Bundle</div>
+                    <div class="order-item-meta">Ribbon &amp; card &middot; Qty: 3</div>
+                  </div>
+                  <div class="order-item-price">$10.50</div>
+                </div>
+
+                <div class="order-item">
+                  <div class="order-item-image">
+                    <div class="order-item-image-inner" style="background:linear-gradient(135deg,#BBDEFB,#42A5F5);">
+                      <span>&#127922;</span>
+                    </div>
+                  </div>
+                  <div class="order-item-info">
+                    <div class="order-item-name">Crazy Cube Puzzle</div>
+                    <div class="order-item-meta">Add-on &middot; Qty: 2</div>
+                  </div>
+                  <div class="order-item-price">$4.00</div>
+                </div>
+
+                <!-- Order Totals -->
+                <div class="order-totals">
+                  <div class="order-totals-row">
+                    <span class="label">Subtotal</span>
+                    <span class="value">$99.50</span>
+                  </div>
+                  <div class="order-totals-row">
+                    <span class="label">Shipping (Express)</span>
+                    <span class="value">$9.95</span>
+                  </div>
+                  <div class="order-totals-row">
+                    <span class="label">Coupon (WELCOME10)</span>
+                    <span class="value discount">&minus;$9.95</span>
+                  </div>
+                  <div class="order-totals-row">
+                    <span class="label">Tax (19% VAT)</span>
+                    <span class="value">$15.92</span>
+                  </div>
+                  <div class="order-totals-row total">
+                    <span class="label">Total</span>
+                    <span class="value">$115.42</span>
+                  </div>
+                  <div class="order-vat-note">incl. 19% VAT ($15.92)</div>
+                </div>
+
+                <!-- Terms Agreement -->
+                <div class="terms-agree">
+                  <label>
+                    <input type="checkbox">
+                    <span>I have read and agree to the <a href="12-terms.html">Terms &amp; Conditions</a> and <a href="11-privacy.html">Privacy Policy</a>. <span class="required">*</span></span>
+                  </label>
+                </div>
+
+                <!-- Place Order -->
+                <button class="btn btn-primary btn-lg place-order-btn">
+                  &#128274; Place Order &ndash; $115.42
+                </button>
+
+                <div class="secure-note">
+                  &#128274; Secure 256-bit SSL encrypted checkout
+                </div>
+              </div>
+
+              <!-- Edit Cart -->
+              <div class="order-review-footer">
+                <a href="14-cart.html">&larr; Edit Cart</a>
+              </div>
+            </div>
+
+            <!-- Trust Badges -->
+            <div class="checkout-trust-row">
+              <div class="checkout-trust-item">
+                <span class="icon">&#128274;</span>
+                <span>SSL<br>Encrypted</span>
+              </div>
+              <div class="checkout-trust-item">
+                <span class="icon">&#128230;</span>
+                <span>30-Day<br>Returns</span>
+              </div>
+              <div class="checkout-trust-item">
+                <span class="icon">&#128666;</span>
+                <span>Fast<br>Shipping</span>
+              </div>
+              <div class="checkout-trust-item">
+                <span class="icon">&#9989;</span>
+                <span>Buyer<br>Protection</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <div class="logo-icon">G</div>
+            <div class="logo-text">Game<span style="color:var(--color-primary);">Box</span></div>
+          </div>
+          <p>Curated themed gift boxes for kids filled with building blocks, creative supplies, and fun extras. Making every gift unforgettable.</p>
+          <div class="footer-social">
+            <a href="#" title="Facebook">Fb</a>
+            <a href="#" title="Instagram">Ig</a>
+            <a href="#" title="TikTok">Tk</a>
+            <a href="#" title="YouTube">Yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="01-home.html">Home</a>
+            <a href="02-shop.html">Shop All</a>
+            <a href="05-gift-finder.html">Gift Finder</a>
+            <a href="04-how-it-works.html">How It Works</a>
+            <a href="06-about.html">About Us</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Customer Service</h4>
+          <div class="footer-links">
+            <a href="08-faq.html">FAQ / Help Center</a>
+            <a href="09-shipping.html">Shipping &amp; Delivery</a>
+            <a href="10-returns.html">Returns &amp; Refunds</a>
+            <a href="07-contact.html">Contact Us</a>
+            <a href="16-account.html">My Account</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <div class="footer-links">
+            <a href="11-privacy.html">Privacy Policy</a>
+            <a href="12-terms.html">Terms &amp; Conditions</a>
+            <a href="13-impressum.html">Imprint (Impressum)</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">&copy; 2026 GameBox. All rights reserved.</div>
+        <div class="footer-payments">
+          <div class="payment-icon">VISA</div>
+          <div class="payment-icon">MC</div>
+          <div class="payment-icon">PAYPAL</div>
+          <div class="payment-icon">KLARNA</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

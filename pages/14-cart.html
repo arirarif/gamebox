@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart - GameBox</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    /* ========== CART PAGE STYLES ========== */
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 36px;
+      align-items: start;
+    }
+
+    /* --- Free Shipping Progress --- */
+    .shipping-progress {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      padding: 20px 28px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 28px;
+    }
+
+    .shipping-progress-text {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .shipping-progress-text strong {
+      color: var(--color-primary);
+    }
+
+    .shipping-bar-track {
+      height: 10px;
+      background-color: var(--color-bg-gray);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .shipping-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+      border-radius: 5px;
+    }
+
+    .shipping-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    /* --- Cart Table --- */
+    .cart-table-wrapper {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .cart-table thead {
+      background-color: var(--color-secondary);
+    }
+
+    .cart-table th {
+      padding: 16px 24px;
+      text-align: left;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+
+    .cart-table th:last-child {
+      text-align: center;
+      width: 60px;
+    }
+
+    .cart-table td {
+      padding: 24px;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .cart-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .cart-table tbody tr:hover {
+      background-color: rgba(255, 107, 53, 0.02);
+    }
+
+    /* --- Cart Product Cell --- */
+    .cart-product {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cart-product-image {
+      width: 90px;
+      height: 90px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .cart-product-image-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .cart-product-category {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-primary);
+      margin-bottom: 2px;
+    }
+
+    .cart-product-name {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-secondary);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .cart-product-name a:hover {
+      color: var(--color-primary);
+    }
+
+    .cart-product-meta {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cart-product-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* --- Price & Subtotal --- */
+    .cart-price {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--color-text);
+    }
+
+    .cart-subtotal {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--color-primary);
+    }
+
+    /* --- Cart Quantity --- */
+    .cart-qty {
+      display: inline-flex;
+      align-items: center;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .cart-qty button {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--color-text);
+      background-color: var(--color-bg-gray);
+      transition: all var(--transition-fast);
+    }
+
+    .cart-qty button:hover {
+      background-color: var(--color-primary);
+      color: #fff;
+    }
+
+    .cart-qty input {
+      width: 44px;
+      height: 36px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-left: 2px solid var(--color-border);
+      border-right: 2px solid var(--color-border);
+    }
+
+    /* --- Remove Button --- */
+    .cart-remove {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--color-text-muted);
+      transition: all var(--transition-fast);
+      margin: 0 auto;
+    }
+
+    .cart-remove:hover {
+      background-color: rgba(220, 53, 69, 0.1);
+      color: var(--color-error);
+    }
+
+    /* --- Cart Actions Bar --- */
+    .cart-actions-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      background-color: var(--color-bg-gray);
+      border-top: 1px solid var(--color-border-light);
+    }
+
+    .cart-coupon {
+      display: flex;
+      gap: 0;
+      max-width: 340px;
+    }
+
+    .cart-coupon .form-input {
+      border-radius: var(--radius-md) 0 0 var(--radius-md);
+      border: 2px solid var(--color-border);
+      border-right: none;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+    }
+
+    .cart-coupon .form-input:focus {
+      border-color: var(--color-primary);
+    }
+
+    .cart-coupon .btn {
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      white-space: nowrap;
+      padding: 10px 20px;
+    }
+
+    .cart-update-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      padding: 10px 20px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-fast);
+    }
+
+    .cart-update-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    /* --- Cart Sidebar / Summary --- */
+    .cart-sidebar {
+      position: sticky;
+      top: 140px;
+    }
+
+    .cart-summary {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .cart-summary-header {
+      background-color: var(--color-secondary);
+      padding: 18px 28px;
+    }
+
+    .cart-summary-header h3 {
+      color: #fff;
+      font-size: 1.15rem;
+      margin-bottom: 0;
+    }
+
+    .cart-summary-body {
+      padding: 28px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      font-size: 0.95rem;
+      color: var(--color-text-light);
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .summary-row:first-child {
+      padding-top: 0;
+    }
+
+    .summary-row .label {
+      font-weight: 500;
+    }
+
+    .summary-row .value {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    /* --- Shipping Options in Summary --- */
+    .summary-shipping-options {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .summary-shipping-options .label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--color-text-light);
+      margin-bottom: 10px;
+    }
+
+    .shipping-radio {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--color-text);
+    }
+
+    .shipping-radio input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    .shipping-radio .shipping-label {
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .shipping-radio .shipping-cost {
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .shipping-radio .shipping-cost.free {
+      color: var(--color-accent-dark);
+    }
+
+    .shipping-radio .shipping-time {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-left: 26px;
+      margin-top: 2px;
+    }
+
+    /* --- Coupon Applied Badge --- */
+    .coupon-applied {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background-color: rgba(123, 199, 77, 0.1);
+      border: 1px solid rgba(123, 199, 77, 0.3);
+      border-radius: var(--radius-md);
+      margin: 16px 0 8px;
+    }
+
+    .coupon-applied-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-accent-dark);
+    }
+
+    /* --- Summary Total --- */
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0 0;
+      margin-top: 4px;
+    }
+
+    .summary-total .label {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-secondary);
+    }
+
+    .summary-total .value {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--color-primary);
+    }
+
+    .summary-tax-note {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      text-align: right;
+      margin-top: 4px;
+      margin-bottom: 20px;
+    }
+
+    .summary-checkout-btn {
+      width: 100%;
+      padding: 16px 28px;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+    }
+
+    .summary-continue {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      padding: 10px;
+      width: 100%;
+      text-align: center;
+      transition: color var(--transition-fast);
+    }
+
+    .summary-continue:hover {
+      color: var(--color-primary);
+    }
+
+    /* --- Accepted Payments --- */
+    .summary-payments {
+      padding: 20px 28px;
+      border-top: 1px solid var(--color-border-light);
+    }
+
+    .summary-payments-label {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .summary-payments-icons {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .summary-payments-icons .payment-icon {
+      width: 50px;
+      height: 32px;
+      background-color: var(--color-bg-gray);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--color-text-muted);
+    }
+
+    /* --- Trust Row Under Summary --- */
+    .cart-trust-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .cart-trust-item {
+      text-align: center;
+      padding: 14px 8px;
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cart-trust-item .icon {
+      font-size: 1.4rem;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .cart-trust-item span:last-child {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      line-height: 1.3;
+      display: block;
+    }
+
+    /* --- Cross-Sell Section --- */
+    .cross-sell-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ==================== TOP BAR ==================== -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-left">
+        <span>&#9993; support@gamebox.de</span>
+        <span>&#9742; +49 123 456 7890</span>
+        <span>&#128666; Free Shipping over $150</span>
+      </div>
+      <div class="top-bar-right">
+        <select>
+          <option>English</option>
+          <option>Deutsch</option>
+          <option>Fran&ccedil;ais</option>
+        </select>
+        <select>
+          <option>USD ($)</option>
+          <option>EUR (&euro;)</option>
+          <option>JPY (&yen;)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="container">
+      <a href="01-home.html" class="logo">
+        <div class="logo-icon">G</div>
+        <div class="logo-text">Game<span>Box</span></div>
+      </a>
+
+      <nav class="main-nav">
+        <a href="01-home.html">Home</a>
+        <a href="02-shop.html">Shop</a>
+        <a href="04-how-it-works.html">How It Works</a>
+        <a href="05-gift-finder.html">Gift Finder</a>
+        <a href="06-about.html">About Us</a>
+        <a href="07-contact.html">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="header-action-btn" title="Search">&#128269;</button>
+        <button class="header-action-btn" title="Account">&#128100;</button>
+        <button class="header-action-btn" title="Wishlist">
+          &#9825;
+          <span class="badge-count">2</span>
+        </button>
+        <button class="header-action-btn" title="Cart">
+          &#128722;
+          <span class="badge-count">3</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- ===== PAGE BANNER ===== -->
+    <div class="page-banner">
+      <div class="container">
+        <h1>&#128722; Shopping Cart</h1>
+        <div class="breadcrumb">
+          <a href="01-home.html">Home</a>
+          <span class="separator">/</span>
+          <span class="current">Shopping Cart</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CART CONTENT ===== -->
+    <section class="section">
+      <div class="container">
+
+        <!-- Free Shipping Progress -->
+        <div class="shipping-progress">
+          <div class="shipping-progress-text">
+            <span>&#128666;</span>
+            You&rsquo;re only <strong>$42.90</strong> away from free shipping! Add more items to qualify.
+          </div>
+          <div class="shipping-bar-track">
+            <div class="shipping-bar-fill" style="width: 71%;"></div>
+          </div>
+          <div class="shipping-bar-labels">
+            <span>$0</span>
+            <span>$150 &mdash; Free Shipping!</span>
+          </div>
+        </div>
+
+        <div class="cart-layout">
+
+          <!-- ===== LEFT: Cart Items ===== -->
+          <div class="cart-main">
+            <div class="cart-table-wrapper">
+              <table class="cart-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <!-- Cart Item 1 -->
+                  <tr>
+                    <td>
+                      <div class="cart-product">
+                        <div class="cart-product-image">
+                          <div class="cart-product-image-inner" style="background:linear-gradient(135deg,#FFD54F,#FF6B35);">
+                            <span>&#128679;</span>
+                          </div>
+                        </div>
+                        <div class="cart-product-info">
+                          <div class="cart-product-category">FunGO / Games2Go</div>
+                          <div class="cart-product-name"><a href="03-product.html">Construction Box &ndash; Build &amp; Play Gift Set</a></div>
+                          <div class="cart-product-meta">
+                            <span>&#128230; Medium Box</span>
+                            <span>&#127912; Orange Theme</span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="cart-price">$25.00</span></td>
+                    <td>
+                      <div class="cart-qty">
+                        <button>&minus;</button>
+                        <input type="text" value="2" readonly>
+                        <button>+</button>
+                      </div>
+                    </td>
+                    <td><span class="cart-subtotal">$50.00</span></td>
+                    <td><button class="cart-remove" title="Remove item">&times;</button></td>
+                  </tr>
+
+                  <!-- Cart Item 2 -->
+                  <tr>
+                    <td>
+                      <div class="cart-product">
+                        <div class="cart-product-image">
+                          <div class="cart-product-image-inner" style="background:linear-gradient(135deg,#81C784,#388E3C);">
+                            <span>&#129430;</span>
+                          </div>
+                        </div>
+                        <div class="cart-product-info">
+                          <div class="cart-product-category">FunGO / Games2Go</div>
+                          <div class="cart-product-name"><a href="03-product.html">Dino Adventure Box</a></div>
+                          <div class="cart-product-meta">
+                            <span>&#127873; Large Box</span>
+                            <span>&#127912; Green Theme</span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="cart-price">$35.00</span></td>
+                    <td>
+                      <div class="cart-qty">
+                        <button>&minus;</button>
+                        <input type="text" value="1" readonly>
+                        <button>+</button>
+                      </div>
+                    </td>
+                    <td><span class="cart-subtotal">$35.00</span></td>
+                    <td><button class="cart-remove" title="Remove item">&times;</button></td>
+                  </tr>
+
+                  <!-- Cart Item 3: Add-on -->
+                  <tr>
+                    <td>
+                      <div class="cart-product">
+                        <div class="cart-product-image">
+                          <div class="cart-product-image-inner" style="background:linear-gradient(135deg,#E1BEE7,#AB47BC);">
+                            <span>&#127880;</span>
+                          </div>
+                        </div>
+                        <div class="cart-product-info">
+                          <div class="cart-product-category">Add-On</div>
+                          <div class="cart-product-name"><a href="#">Gift Wrapping &amp; Greeting Card Bundle</a></div>
+                          <div class="cart-product-meta">
+                            <span>&#127873; Includes ribbon &amp; card</span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="cart-price">$3.50</span></td>
+                    <td>
+                      <div class="cart-qty">
+                        <button>&minus;</button>
+                        <input type="text" value="3" readonly>
+                        <button>+</button>
+                      </div>
+                    </td>
+                    <td><span class="cart-subtotal">$10.50</span></td>
+                    <td><button class="cart-remove" title="Remove item">&times;</button></td>
+                  </tr>
+
+                  <!-- Cart Item 4 -->
+                  <tr>
+                    <td>
+                      <div class="cart-product">
+                        <div class="cart-product-image">
+                          <div class="cart-product-image-inner" style="background:linear-gradient(135deg,#BBDEFB,#42A5F5);">
+                            <span>&#127922;</span>
+                          </div>
+                        </div>
+                        <div class="cart-product-info">
+                          <div class="cart-product-category">Add-On</div>
+                          <div class="cart-product-name"><a href="#">Crazy Cube Puzzle</a></div>
+                          <div class="cart-product-meta">
+                            <span>&#127922; Brain teaser puzzle</span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="cart-price">$2.00</span></td>
+                    <td>
+                      <div class="cart-qty">
+                        <button>&minus;</button>
+                        <input type="text" value="2" readonly>
+                        <button>+</button>
+                      </div>
+                    </td>
+                    <td><span class="cart-subtotal">$4.00</span></td>
+                    <td><button class="cart-remove" title="Remove item">&times;</button></td>
+                  </tr>
+
+                </tbody>
+              </table>
+
+              <!-- Cart Actions -->
+              <div class="cart-actions-bar">
+                <div class="cart-coupon">
+                  <input type="text" class="form-input" placeholder="Coupon code">
+                  <button class="btn btn-secondary">Apply</button>
+                </div>
+                <button class="cart-update-btn">&#8635; Update Cart</button>
+              </div>
+            </div>
+
+            <!-- Coupon Success Message -->
+            <div class="alert alert-success mt-2">
+              &#10003; Coupon <strong>WELCOME10</strong> applied! You saved <strong>$9.95</strong> on this order.
+            </div>
+          </div>
+
+          <!-- ===== RIGHT: Cart Summary ===== -->
+          <div class="cart-sidebar">
+            <div class="cart-summary">
+              <div class="cart-summary-header">
+                <h3>&#128179; Order Summary</h3>
+              </div>
+              <div class="cart-summary-body">
+
+                <div class="summary-row">
+                  <span class="label">Subtotal (8 items)</span>
+                  <span class="value">$99.50</span>
+                </div>
+
+                <!-- Shipping Options -->
+                <div class="summary-shipping-options">
+                  <div class="label">Shipping</div>
+                  <label class="shipping-radio">
+                    <input type="radio" name="shipping" checked>
+                    <span class="shipping-label">Standard Delivery</span>
+                    <span class="shipping-cost">$4.95</span>
+                  </label>
+                  <div class="shipping-radio">
+                    <span class="shipping-time">3&ndash;5 business days</span>
+                  </div>
+                  <label class="shipping-radio">
+                    <input type="radio" name="shipping">
+                    <span class="shipping-label">Express Delivery</span>
+                    <span class="shipping-cost">$9.95</span>
+                  </label>
+                  <div class="shipping-radio">
+                    <span class="shipping-time">1&ndash;2 business days</span>
+                  </div>
+                  <label class="shipping-radio">
+                    <input type="radio" name="shipping">
+                    <span class="shipping-label">Pick-up Point</span>
+                    <span class="shipping-cost free">FREE</span>
+                  </label>
+                  <div class="shipping-radio">
+                    <span class="shipping-time">3&ndash;5 business days</span>
+                  </div>
+                </div>
+
+                <div class="summary-row">
+                  <span class="label">Estimated Tax</span>
+                  <span class="value">$15.92</span>
+                </div>
+
+                <!-- Coupon Applied -->
+                <div class="coupon-applied">
+                  <span class="coupon-applied-text">&#127915; WELCOME10</span>
+                  <span class="coupon-applied-text">&minus;$9.95</span>
+                </div>
+
+                <!-- Total -->
+                <div class="summary-total">
+                  <span class="label">Total</span>
+                  <span class="value">$110.42</span>
+                </div>
+                <div class="summary-tax-note">incl. 19% VAT</div>
+
+                <a href="15-checkout.html" class="btn btn-primary btn-lg summary-checkout-btn">
+                  &#128274; Proceed to Checkout
+                </a>
+                <a href="02-shop.html" class="summary-continue">
+                  &larr; Continue Shopping
+                </a>
+              </div>
+
+              <!-- Accepted Payments -->
+              <div class="summary-payments">
+                <div class="summary-payments-label">Accepted Payment Methods</div>
+                <div class="summary-payments-icons">
+                  <div class="payment-icon">VISA</div>
+                  <div class="payment-icon">MC</div>
+                  <div class="payment-icon">PAYPAL</div>
+                  <div class="payment-icon">KLARNA</div>
+                  <div class="payment-icon">AMEX</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Trust Badges -->
+            <div class="cart-trust-row">
+              <div class="cart-trust-item">
+                <span class="icon">&#128274;</span>
+                <span>Secure<br>Checkout</span>
+              </div>
+              <div class="cart-trust-item">
+                <span class="icon">&#128230;</span>
+                <span>30-Day<br>Returns</span>
+              </div>
+              <div class="cart-trust-item">
+                <span class="icon">&#128666;</span>
+                <span>Fast<br>Shipping</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CROSS-SELL / YOU MAY ALSO LIKE ===== -->
+    <section class="section bg-white">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Complete the Gift</span>
+          <h2>You May Also Like</h2>
+        </div>
+
+        <div class="cross-sell-grid">
+
+          <!-- Cross-sell 1 -->
+          <div class="product-card">
+            <div class="product-card-image">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#EF5350,#C62828);display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:3.5rem;">&#128659;</span>
+              </div>
+              <span class="product-card-badge bestseller">Bestseller</span>
+              <div class="product-card-actions">
+                <button title="Add to Wishlist">&#9825;</button>
+                <button title="Quick View">&#128065;</button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-card-category">Rescue Team</div>
+              <h3 class="product-card-title"><a href="03-product.html">Rescue Team Box</a></h3>
+              <div class="product-card-rating">
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                <span class="count">(29)</span>
+              </div>
+              <div class="product-card-price">
+                <span class="price-from">From</span>
+                <span class="price">$15.00</span>
+              </div>
+            </div>
+            <div class="product-card-footer">
+              <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+            </div>
+          </div>
+
+          <!-- Cross-sell 2 -->
+          <div class="product-card">
+            <div class="product-card-image">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#7E57C2,#311B92);display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:3.5rem;">&#11088;</span>
+              </div>
+              <span class="product-card-badge sale">-10%</span>
+              <div class="product-card-actions">
+                <button title="Add to Wishlist">&#9825;</button>
+                <button title="Quick View">&#128065;</button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-card-category">FunGO / Games2Go</div>
+              <h3 class="product-card-title"><a href="03-product.html">Star World Box</a></h3>
+              <div class="product-card-rating">
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="count">(52)</span>
+              </div>
+              <div class="product-card-price">
+                <span class="price">$13.50</span>
+                <span class="price-old">$15.00</span>
+              </div>
+            </div>
+            <div class="product-card-footer">
+              <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+            </div>
+          </div>
+
+          <!-- Cross-sell 3 -->
+          <div class="product-card">
+            <div class="product-card-image">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#FFD54F,#F9A825);display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:3.5rem;">&#129409;</span>
+              </div>
+              <span class="product-card-badge new">New</span>
+              <div class="product-card-actions">
+                <button title="Add to Wishlist">&#9825;</button>
+                <button title="Quick View">&#128065;</button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-card-category">Wild Animals</div>
+              <h3 class="product-card-title"><a href="03-product.html">Safari Explorer Box</a></h3>
+              <div class="product-card-rating">
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="count">(14)</span>
+              </div>
+              <div class="product-card-price">
+                <span class="price-from">From</span>
+                <span class="price">$15.00</span>
+              </div>
+            </div>
+            <div class="product-card-footer">
+              <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+            </div>
+          </div>
+
+          <!-- Cross-sell 4 -->
+          <div class="product-card">
+            <div class="product-card-image">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#F48FB1,#E91E63);display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:3.5rem;">&#129412;</span>
+              </div>
+              <div class="product-card-actions">
+                <button title="Add to Wishlist">&#9825;</button>
+                <button title="Quick View">&#128065;</button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-card-category">FunGO / Games2Go</div>
+              <h3 class="product-card-title"><a href="03-product.html">Unicorn Magic Box</a></h3>
+              <div class="product-card-rating">
+                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="count">(41)</span>
+              </div>
+              <div class="product-card-price">
+                <span class="price-from">From</span>
+                <span class="price">$15.00</span>
+              </div>
+            </div>
+            <div class="product-card-footer">
+              <a href="03-product.html" class="btn btn-primary btn-sm">Customize Box</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEWSLETTER ===== -->
+    <section class="newsletter-bar">
+      <div class="container">
+        <div>
+          <h3>Stay in the Loop!</h3>
+          <p>Subscribe to get exclusive deals, new box announcements, and 10% off your first order.</p>
+        </div>
+        <form class="newsletter-form">
+          <input type="email" class="form-input" placeholder="Enter your email address">
+          <button type="submit" class="btn">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <div class="logo-icon">G</div>
+            <div class="logo-text">Game<span style="color:var(--color-primary);">Box</span></div>
+          </div>
+          <p>Curated themed gift boxes for kids filled with building blocks, creative supplies, and fun extras. Making every gift unforgettable.</p>
+          <div class="footer-social">
+            <a href="#" title="Facebook">Fb</a>
+            <a href="#" title="Instagram">Ig</a>
+            <a href="#" title="TikTok">Tk</a>
+            <a href="#" title="YouTube">Yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="01-home.html">Home</a>
+            <a href="02-shop.html">Shop All</a>
+            <a href="05-gift-finder.html">Gift Finder</a>
+            <a href="04-how-it-works.html">How It Works</a>
+            <a href="06-about.html">About Us</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Customer Service</h4>
+          <div class="footer-links">
+            <a href="08-faq.html">FAQ / Help Center</a>
+            <a href="09-shipping.html">Shipping &amp; Delivery</a>
+            <a href="10-returns.html">Returns &amp; Refunds</a>
+            <a href="07-contact.html">Contact Us</a>
+            <a href="16-account.html">My Account</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <div class="footer-links">
+            <a href="11-privacy.html">Privacy Policy</a>
+            <a href="12-terms.html">Terms &amp; Conditions</a>
+            <a href="13-impressum.html">Imprint (Impressum)</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">&copy; 2026 GameBox. All rights reserved.</div>
+        <div class="footer-payments">
+          <div class="payment-icon">VISA</div>
+          <div class="payment-icon">MC</div>
+          <div class="payment-icon">PAYPAL</div>
+          <div class="payment-icon">KLARNA</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

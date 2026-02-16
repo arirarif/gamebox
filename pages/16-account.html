@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account - GameBox</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    /* ========== ACCOUNT PAGE STYLES ========== */
+
+    .account-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    /* --- Account Sidebar --- */
+    .account-sidebar {
+      position: sticky;
+      top: 140px;
+    }
+
+    .account-profile-card {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 28px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .account-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      margin: 0 auto 14px;
+    }
+
+    .account-name {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-secondary);
+      margin-bottom: 2px;
+    }
+
+    .account-email {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-bottom: 12px;
+    }
+
+    .account-member-since {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      padding-top: 12px;
+      border-top: 1px solid var(--color-border-light);
+    }
+
+    /* --- Account Nav --- */
+    .account-nav {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .account-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-text);
+      border-left: 3px solid transparent;
+      transition: all var(--transition-fast);
+    }
+
+    .account-nav a:hover {
+      background-color: var(--color-bg-light);
+      color: var(--color-primary);
+    }
+
+    .account-nav a.active {
+      background-color: rgba(255, 107, 53, 0.06);
+      color: var(--color-primary);
+      border-left-color: var(--color-primary);
+    }
+
+    .account-nav a .nav-icon {
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .account-nav a .nav-badge {
+      margin-left: auto;
+      background-color: var(--color-primary);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-xl);
+    }
+
+    .account-nav-divider {
+      height: 1px;
+      background-color: var(--color-border-light);
+      margin: 4px 0;
+    }
+
+    .account-nav a.logout {
+      color: var(--color-error);
+    }
+
+    .account-nav a.logout:hover {
+      background-color: rgba(220, 53, 69, 0.05);
+    }
+
+    /* --- Account Content Area --- */
+    .account-content-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .account-content-header h2 {
+      font-size: 1.5rem;
+      color: var(--color-secondary);
+      margin-bottom: 0;
+    }
+
+    /* --- Dashboard Stats --- */
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      transition: all var(--transition-normal);
+    }
+
+    .stat-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
+    }
+
+    .stat-card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 12px;
+    }
+
+    .stat-card-icon.orders {
+      background-color: rgba(255, 107, 53, 0.1);
+    }
+
+    .stat-card-icon.wishlist {
+      background-color: rgba(220, 53, 69, 0.1);
+    }
+
+    .stat-card-icon.rewards {
+      background-color: rgba(255, 193, 7, 0.1);
+    }
+
+    .stat-card-icon.reviews {
+      background-color: rgba(123, 199, 77, 0.1);
+    }
+
+    .stat-card-number {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--color-secondary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-card-label {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      font-weight: 500;
+    }
+
+    /* --- Recent Orders Table --- */
+    .account-card {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .account-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      border-bottom: 2px solid var(--color-border-light);
+    }
+
+    .account-card-header h3 {
+      font-size: 1.1rem;
+      color: var(--color-secondary);
+      margin-bottom: 0;
+    }
+
+    .account-card-header a {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    .account-card-body {
+      padding: 0;
+    }
+
+    /* Orders Table */
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .orders-table th {
+      padding: 12px 24px;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-text-muted);
+      background-color: var(--color-bg-gray);
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .orders-table td {
+      padding: 16px 24px;
+      font-size: 0.9rem;
+      color: var(--color-text);
+      border-bottom: 1px solid var(--color-border-light);
+      vertical-align: middle;
+    }
+
+    .orders-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .orders-table tbody tr:hover {
+      background-color: rgba(255, 107, 53, 0.02);
+    }
+
+    .order-id {
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .order-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: var(--radius-xl);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .order-status.delivered {
+      background-color: rgba(40, 167, 69, 0.1);
+      color: var(--color-success);
+    }
+
+    .order-status.processing {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: #856404;
+    }
+
+    .order-status.shipped {
+      background-color: rgba(23, 162, 184, 0.1);
+      color: var(--color-info);
+    }
+
+    .order-status.cancelled {
+      background-color: rgba(220, 53, 69, 0.1);
+      color: var(--color-error);
+    }
+
+    .order-total {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      color: var(--color-secondary);
+    }
+
+    .order-action-btn {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      padding: 6px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-fast);
+    }
+
+    .order-action-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    /* --- Dashboard Quick Actions --- */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .quick-action-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-normal);
+      cursor: pointer;
+    }
+
+    .quick-action-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      color: inherit;
+    }
+
+    .quick-action-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background-color: var(--color-bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .quick-action-card:hover .quick-action-icon {
+      background-color: var(--color-primary);
+      color: #fff;
+    }
+
+    .quick-action-text h5 {
+      font-size: 0.95rem;
+      color: var(--color-secondary);
+      margin-bottom: 2px;
+    }
+
+    .quick-action-text p {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0;
+    }
+
+    /* --- Saved Addresses --- */
+    .address-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 24px;
+    }
+
+    .address-card {
+      padding: 20px;
+      border: 2px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      position: relative;
+    }
+
+    .address-card.default {
+      border-color: var(--color-primary);
+    }
+
+    .address-card-badge {
+      position: absolute;
+      top: -10px;
+      right: 16px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background-color: var(--color-primary);
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: var(--radius-sm);
+    }
+
+    .address-card h5 {
+      font-size: 0.95rem;
+      color: var(--color-secondary);
+      margin-bottom: 8px;
+    }
+
+    .address-card p {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .address-card-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .address-card-actions a {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+    }
+
+    .address-card-actions a:hover {
+      color: var(--color-primary);
+    }
+
+    .address-card-actions a.delete:hover {
+      color: var(--color-error);
+    }
+
+    /* ========== LOGIN / REGISTER SECTION ========== */
+    .auth-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .auth-card {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 40px;
+    }
+
+    .auth-card h2 {
+      font-size: 1.5rem;
+      color: var(--color-secondary);
+      margin-bottom: 8px;
+    }
+
+    .auth-card .auth-subtitle {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      margin-bottom: 28px;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background-color: var(--color-border);
+    }
+
+    .auth-divider span {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      font-weight: 500;
+    }
+
+    .social-login {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 20px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-text);
+      transition: all var(--transition-fast);
+    }
+
+    .social-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .auth-footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+
+    .auth-footer a {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    /* --- Register Benefits --- */
+    .register-benefits {
+      margin-bottom: 28px;
+    }
+
+    .register-benefit {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+    }
+
+    .register-benefit .icon {
+      color: var(--color-accent);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ==================== TOP BAR ==================== -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-left">
+        <span>&#9993; support@gamebox.de</span>
+        <span>&#9742; +49 123 456 7890</span>
+        <span>&#128666; Free Shipping over $150</span>
+      </div>
+      <div class="top-bar-right">
+        <select>
+          <option>English</option>
+          <option>Deutsch</option>
+          <option>Fran&ccedil;ais</option>
+        </select>
+        <select>
+          <option>USD ($)</option>
+          <option>EUR (&euro;)</option>
+          <option>JPY (&yen;)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="container">
+      <a href="01-home.html" class="logo">
+        <div class="logo-icon">G</div>
+        <div class="logo-text">Game<span>Box</span></div>
+      </a>
+
+      <nav class="main-nav">
+        <a href="01-home.html">Home</a>
+        <a href="02-shop.html">Shop</a>
+        <a href="04-how-it-works.html">How It Works</a>
+        <a href="05-gift-finder.html">Gift Finder</a>
+        <a href="06-about.html">About Us</a>
+        <a href="07-contact.html">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="header-action-btn" title="Search">&#128269;</button>
+        <button class="header-action-btn" title="Account">&#128100;</button>
+        <button class="header-action-btn" title="Wishlist">
+          &#9825;
+          <span class="badge-count">2</span>
+        </button>
+        <button class="header-action-btn" title="Cart">
+          &#128722;
+          <span class="badge-count">3</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- ===== PAGE BANNER ===== -->
+    <div class="page-banner">
+      <div class="container">
+        <h1>&#128100; My Account</h1>
+        <div class="breadcrumb">
+          <a href="01-home.html">Home</a>
+          <span class="separator">/</span>
+          <span class="current">My Account</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         SECTION A: LOGIN / REGISTER (shown to logged-out users)
+         ============================================================ -->
+    <section class="section">
+      <div class="container">
+        <div class="auth-layout">
+
+          <!-- Login Card -->
+          <div class="auth-card">
+            <h2>&#128272; Login</h2>
+            <p class="auth-subtitle">Welcome back! Sign in to your account.</p>
+
+            <form>
+              <div class="form-group">
+                <label class="form-label">Email Address <span class="required">*</span></label>
+                <input type="email" class="form-input" placeholder="your@email.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password <span class="required">*</span></label>
+                <input type="password" class="form-input" placeholder="Enter your password">
+              </div>
+              <div class="form-group" style="display:flex;justify-content:space-between;align-items:center;">
+                <label class="form-checkbox">
+                  <input type="checkbox">
+                  <span>Remember me</span>
+                </label>
+                <a href="#" style="font-size:0.85rem;font-weight:600;color:var(--color-primary);">Forgot password?</a>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block btn-lg">Login</button>
+            </form>
+
+            <div class="auth-divider"><span>or continue with</span></div>
+
+            <div class="social-login">
+              <button class="social-btn">G &nbsp; Continue with Google</button>
+              <button class="social-btn">f &nbsp; Continue with Facebook</button>
+            </div>
+          </div>
+
+          <!-- Register Card -->
+          <div class="auth-card">
+            <h2>&#127881; Create Account</h2>
+            <p class="auth-subtitle">Join GameBox for a better experience!</p>
+
+            <div class="register-benefits">
+              <div class="register-benefit">
+                <span class="icon">&#10003;</span>
+                <span>Track your orders easily</span>
+              </div>
+              <div class="register-benefit">
+                <span class="icon">&#10003;</span>
+                <span>Save items to your wishlist</span>
+              </div>
+              <div class="register-benefit">
+                <span class="icon">&#10003;</span>
+                <span>Faster checkout with saved addresses</span>
+              </div>
+              <div class="register-benefit">
+                <span class="icon">&#10003;</span>
+                <span>Exclusive offers &amp; early access</span>
+              </div>
+            </div>
+
+            <form>
+              <div class="form-group">
+                <label class="form-label">Full Name <span class="required">*</span></label>
+                <input type="text" class="form-input" placeholder="Max Mustermann">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address <span class="required">*</span></label>
+                <input type="email" class="form-input" placeholder="your@email.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password <span class="required">*</span></label>
+                <input type="password" class="form-input" placeholder="Min. 8 characters">
+                <span class="form-hint">Use at least 8 characters with letters and numbers</span>
+              </div>
+              <div class="form-group">
+                <label class="form-checkbox">
+                  <input type="checkbox">
+                  <span>I agree to the <a href="12-terms.html" style="color:var(--color-primary);font-weight:600;">Terms</a> &amp; <a href="11-privacy.html" style="color:var(--color-primary);font-weight:600;">Privacy Policy</a></span>
+                </label>
+              </div>
+              <button type="submit" class="btn btn-accent btn-block btn-lg">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+              Already have an account? <a href="#">Login here</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION B: ACCOUNT DASHBOARD (shown to logged-in users)
+         ============================================================ -->
+    <section class="section" style="background-color:var(--color-bg);">
+      <div class="container">
+        <div class="account-layout">
+
+          <!-- ===== Sidebar ===== -->
+          <aside class="account-sidebar">
+            <div class="account-profile-card">
+              <div class="account-avatar">SM</div>
+              <div class="account-name">Sarah Mueller</div>
+              <div class="account-email">sarah@example.com</div>
+              <div class="account-member-since">Member since Jan 2025</div>
+            </div>
+
+            <nav class="account-nav">
+              <a href="#" class="active">
+                <span class="nav-icon">&#128200;</span> Dashboard
+              </a>
+              <a href="#">
+                <span class="nav-icon">&#128230;</span> Orders
+                <span class="nav-badge">5</span>
+              </a>
+              <a href="#">
+                <span class="nav-icon">&#9825;</span> Wishlist
+                <span class="nav-badge">2</span>
+              </a>
+              <a href="#">
+                <span class="nav-icon">&#128205;</span> Addresses
+              </a>
+              <a href="#">
+                <span class="nav-icon">&#128179;</span> Payment Methods
+              </a>
+              <a href="#">
+                <span class="nav-icon">&#128100;</span> Account Details
+              </a>
+              <div class="account-nav-divider"></div>
+              <a href="#" class="logout">
+                <span class="nav-icon">&#10140;</span> Logout
+              </a>
+            </nav>
+          </aside>
+
+          <!-- ===== Main Content ===== -->
+          <div class="account-main">
+
+            <!-- Welcome Header -->
+            <div class="account-content-header">
+              <h2>Welcome back, Sarah!</h2>
+              <a href="02-shop.html" class="btn btn-outline btn-sm">&#128722; Continue Shopping</a>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div class="dashboard-stats">
+              <div class="stat-card">
+                <div class="stat-card-icon orders">&#128230;</div>
+                <div class="stat-card-number">12</div>
+                <div class="stat-card-label">Total Orders</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-icon wishlist">&#9825;</div>
+                <div class="stat-card-number">2</div>
+                <div class="stat-card-label">Wishlist Items</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-icon rewards">&#11088;</div>
+                <div class="stat-card-number">340</div>
+                <div class="stat-card-label">Reward Points</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-icon reviews">&#9733;</div>
+                <div class="stat-card-number">6</div>
+                <div class="stat-card-label">Reviews Given</div>
+              </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="account-card">
+              <div class="account-card-header">
+                <h3>&#128230; Recent Orders</h3>
+                <a href="#">View All Orders &rarr;</a>
+              </div>
+              <div class="account-card-body">
+                <table class="orders-table">
+                  <thead>
+                    <tr>
+                      <th>Order</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th>Total</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="order-id">#GB-10248</span></td>
+                      <td>Feb 12, 2026</td>
+                      <td><span class="order-status processing">&#9679; Processing</span></td>
+                      <td><span class="order-total">$115.42</span></td>
+                      <td><button class="order-action-btn">View</button></td>
+                    </tr>
+                    <tr>
+                      <td><span class="order-id">#GB-10195</span></td>
+                      <td>Jan 28, 2026</td>
+                      <td><span class="order-status shipped">&#9679; Shipped</span></td>
+                      <td><span class="order-total">$67.50</span></td>
+                      <td><button class="order-action-btn">Track</button></td>
+                    </tr>
+                    <tr>
+                      <td><span class="order-id">#GB-10143</span></td>
+                      <td>Jan 15, 2026</td>
+                      <td><span class="order-status delivered">&#9679; Delivered</span></td>
+                      <td><span class="order-total">$89.00</span></td>
+                      <td><button class="order-action-btn">Reorder</button></td>
+                    </tr>
+                    <tr>
+                      <td><span class="order-id">#GB-10089</span></td>
+                      <td>Dec 20, 2025</td>
+                      <td><span class="order-status delivered">&#9679; Delivered</span></td>
+                      <td><span class="order-total">$154.25</span></td>
+                      <td><button class="order-action-btn">Reorder</button></td>
+                    </tr>
+                    <tr>
+                      <td><span class="order-id">#GB-09821</span></td>
+                      <td>Nov 30, 2025</td>
+                      <td><span class="order-status cancelled">&#9679; Cancelled</span></td>
+                      <td><span class="order-total">$42.00</span></td>
+                      <td><button class="order-action-btn">Details</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Saved Addresses -->
+            <div class="account-card">
+              <div class="account-card-header">
+                <h3>&#128205; Saved Addresses</h3>
+                <a href="#">+ Add New Address</a>
+              </div>
+              <div class="account-card-body">
+                <div class="address-grid">
+                  <div class="address-card default">
+                    <span class="address-card-badge">Default</span>
+                    <h5>Home</h5>
+                    <p>
+                      Sarah Mueller<br>
+                      Musterstra&szlig;e 42<br>
+                      10115 Berlin<br>
+                      Germany<br>
+                      +49 170 1234567
+                    </p>
+                    <div class="address-card-actions">
+                      <a href="#">Edit</a>
+                      <a href="#" class="delete">Delete</a>
+                    </div>
+                  </div>
+                  <div class="address-card">
+                    <h5>Office</h5>
+                    <p>
+                      Sarah Mueller<br>
+                      Gesch&auml;ftsweg 10, 3. OG<br>
+                      10178 Berlin<br>
+                      Germany<br>
+                      +49 30 9876543
+                    </p>
+                    <div class="address-card-actions">
+                      <a href="#">Edit</a>
+                      <a href="#">Set as Default</a>
+                      <a href="#" class="delete">Delete</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="account-content-header" style="margin-top:8px;">
+              <h2 style="font-size:1.2rem;">Quick Actions</h2>
+            </div>
+            <div class="quick-actions">
+              <a href="02-shop.html" class="quick-action-card">
+                <div class="quick-action-icon">&#128269;</div>
+                <div class="quick-action-text">
+                  <h5>Browse Shop</h5>
+                  <p>Discover new themed boxes</p>
+                </div>
+              </a>
+              <a href="05-gift-finder.html" class="quick-action-card">
+                <div class="quick-action-icon">&#127873;</div>
+                <div class="quick-action-text">
+                  <h5>Gift Finder</h5>
+                  <p>Find the perfect gift</p>
+                </div>
+              </a>
+              <a href="#" class="quick-action-card">
+                <div class="quick-action-icon">&#128179;</div>
+                <div class="quick-action-text">
+                  <h5>Payment Methods</h5>
+                  <p>Manage saved cards</p>
+                </div>
+              </a>
+              <a href="08-faq.html" class="quick-action-card">
+                <div class="quick-action-icon">&#10067;</div>
+                <div class="quick-action-text">
+                  <h5>Help Center</h5>
+                  <p>Get help with your order</p>
+                </div>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEWSLETTER ===== -->
+    <section class="newsletter-bar">
+      <div class="container">
+        <div>
+          <h3>Stay in the Loop!</h3>
+          <p>Subscribe to get exclusive deals, new box announcements, and 10% off your first order.</p>
+        </div>
+        <form class="newsletter-form">
+          <input type="email" class="form-input" placeholder="Enter your email address">
+          <button type="submit" class="btn">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <div class="logo-icon">G</div>
+            <div class="logo-text">Game<span style="color:var(--color-primary);">Box</span></div>
+          </div>
+          <p>Curated themed gift boxes for kids filled with building blocks, creative supplies, and fun extras. Making every gift unforgettable.</p>
+          <div class="footer-social">
+            <a href="#" title="Facebook">Fb</a>
+            <a href="#" title="Instagram">Ig</a>
+            <a href="#" title="TikTok">Tk</a>
+            <a href="#" title="YouTube">Yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="01-home.html">Home</a>
+            <a href="02-shop.html">Shop All</a>
+            <a href="05-gift-finder.html">Gift Finder</a>
+            <a href="04-how-it-works.html">How It Works</a>
+            <a href="06-about.html">About Us</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Customer Service</h4>
+          <div class="footer-links">
+            <a href="08-faq.html">FAQ / Help Center</a>
+            <a href="09-shipping.html">Shipping &amp; Delivery</a>
+            <a href="10-returns.html">Returns &amp; Refunds</a>
+            <a href="07-contact.html">Contact Us</a>
+            <a href="16-account.html">My Account</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <div class="footer-links">
+            <a href="11-privacy.html">Privacy Policy</a>
+            <a href="12-terms.html">Terms &amp; Conditions</a>
+            <a href="13-impressum.html">Imprint (Impressum)</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">&copy; 2026 GameBox. All rights reserved.</div>
+        <div class="footer-payments">
+          <div class="payment-icon">VISA</div>
+          <div class="payment-icon">MC</div>
+          <div class="payment-icon">PAYPAL</div>
+          <div class="payment-icon">KLARNA</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
