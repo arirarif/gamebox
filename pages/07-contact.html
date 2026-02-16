@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - GameBox</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    /* ========== CONTACT PAGE STYLES ========== */
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* --- Contact Form --- */
+    .contact-form-card {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .contact-form-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+    }
+
+    .contact-form-card > p {
+      font-size: 0.95rem;
+      color: var(--color-text-light);
+      margin-bottom: 28px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 20px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    .contact-form-card .btn {
+      margin-top: 8px;
+    }
+
+    /* --- Sidebar --- */
+    .contact-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .contact-info-card {
+      background-color: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .contact-info-card h4 {
+      font-size: 1.1rem;
+      color: var(--color-secondary);
+      margin-bottom: 20px;
+    }
+
+    .contact-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .contact-info-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .contact-info-icon {
+      width: 44px;
+      height: 44px;
+      background-color: var(--color-bg-light);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--color-primary);
+      flex-shrink: 0;
+    }
+
+    .contact-info-text h5 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--color-secondary);
+      margin-bottom: 2px;
+    }
+
+    .contact-info-text p {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      margin-bottom: 0;
+      line-height: 1.5;
+    }
+
+    /* Hours Card */
+    .hours-table {
+      width: 100%;
+    }
+
+    .hours-table tr {
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .hours-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .hours-table td {
+      padding: 8px 0;
+      font-size: 0.85rem;
+    }
+
+    .hours-table td:first-child {
+      font-weight: 600;
+      color: var(--color-secondary);
+    }
+
+    .hours-table td:last-child {
+      text-align: right;
+      color: var(--color-text-light);
+    }
+
+    .hours-table .closed {
+      color: var(--color-error);
+    }
+
+    /* Social Links */
+    .contact-social {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .contact-social a {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-full);
+      background-color: var(--color-bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--color-text-light);
+      transition: all var(--transition-fast);
+    }
+
+    .contact-social a:hover {
+      background-color: var(--color-primary);
+      color: #fff;
+    }
+
+    /* --- Map Placeholder --- */
+    .map-section {
+      height: 360px;
+      background-color: var(--color-bg-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .map-placeholder {
+      text-align: center;
+    }
+
+    .map-placeholder .map-icon {
+      font-size: 3rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .map-placeholder p {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    /* --- FAQ Section --- */
+    .contact-faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ==================== TOP BAR ==================== -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-left">
+        <span>&#9993; support@gamebox.de</span>
+        <span>&#9742; +49 123 456 7890</span>
+        <span>&#128666; Free Shipping over $150</span>
+      </div>
+      <div class="top-bar-right">
+        <select>
+          <option>English</option>
+          <option>Deutsch</option>
+          <option>Fran&ccedil;ais</option>
+        </select>
+        <select>
+          <option>USD ($)</option>
+          <option>EUR (&euro;)</option>
+          <option>JPY (&yen;)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="container">
+      <a href="01-home.html" class="logo">
+        <div class="logo-icon">G</div>
+        <div class="logo-text">Game<span>Box</span></div>
+      </a>
+      <nav class="main-nav">
+        <a href="01-home.html">Home</a>
+        <a href="02-shop.html">Shop</a>
+        <a href="04-how-it-works.html">How It Works</a>
+        <a href="05-gift-finder.html">Gift Finder</a>
+        <a href="06-about.html">About Us</a>
+        <a href="07-contact.html" class="active">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="header-action-btn" title="Search">&#128269;</button>
+        <button class="header-action-btn" title="Account">&#128100;</button>
+        <button class="header-action-btn" title="Wishlist">&#9825;<span class="badge-count">2</span></button>
+        <button class="header-action-btn" title="Cart">&#128722;<span class="badge-count">3</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- ===== PAGE BANNER ===== -->
+    <div class="page-banner">
+      <div class="container">
+        <h1>Contact Us</h1>
+        <div class="breadcrumb">
+          <a href="01-home.html">Home</a>
+          <span class="separator">/</span>
+          <span class="current">Contact</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CONTACT SECTION ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="contact-layout">
+
+          <!-- Contact Form -->
+          <div class="contact-form-card">
+            <h2>Send Us a Message</h2>
+            <p>Have a question, feedback, or a custom order request? Fill out the form below and we&rsquo;ll get back to you within 24 hours.</p>
+
+            <form>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">First Name <span class="required">*</span></label>
+                  <input type="text" class="form-input" placeholder="Your first name">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name <span class="required">*</span></label>
+                  <input type="text" class="form-input" placeholder="Your last name">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Email Address <span class="required">*</span></label>
+                  <input type="email" class="form-input" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <input type="tel" class="form-input" placeholder="+49 123 456 7890">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Subject <span class="required">*</span></label>
+                <select class="form-select">
+                  <option value="">Select a subject...</option>
+                  <option>General Inquiry</option>
+                  <option>Order Question</option>
+                  <option>Return / Refund</option>
+                  <option>Custom / Corporate Order</option>
+                  <option>Partnership / Collaboration</option>
+                  <option>Technical Issue</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Order Number <span style="font-weight:400;color:var(--color-text-muted);">(if applicable)</span></label>
+                <input type="text" class="form-input" placeholder="e.g. GB-2026-12345">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Your Message <span class="required">*</span></label>
+                <textarea class="form-textarea" placeholder="How can we help you?" rows="6"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-checkbox">
+                  <input type="checkbox">
+                  <span>I agree to the <a href="11-privacy.html" style="color:var(--color-primary);font-weight:600;">Privacy Policy</a> and consent to processing of my data.</span>
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Send Message</button>
+            </form>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="contact-sidebar">
+
+            <!-- Contact Info -->
+            <div class="contact-info-card">
+              <h4>Get In Touch</h4>
+
+              <div class="contact-info-item">
+                <div class="contact-info-icon">&#9993;</div>
+                <div class="contact-info-text">
+                  <h5>Email</h5>
+                  <p>support@gamebox.de</p>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <div class="contact-info-icon">&#9742;</div>
+                <div class="contact-info-text">
+                  <h5>Phone</h5>
+                  <p>+49 123 456 7890</p>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <div class="contact-info-icon">&#128205;</div>
+                <div class="contact-info-text">
+                  <h5>Address</h5>
+                  <p>GameBox GmbH<br>Musterstra&szlig;e 42<br>10115 Berlin, Germany</p>
+                </div>
+              </div>
+
+              <div class="contact-social">
+                <a href="#" title="Facebook">Fb</a>
+                <a href="#" title="Instagram">Ig</a>
+                <a href="#" title="TikTok">Tk</a>
+                <a href="#" title="YouTube">Yt</a>
+              </div>
+            </div>
+
+            <!-- Business Hours -->
+            <div class="contact-info-card">
+              <h4>Business Hours</h4>
+              <table class="hours-table">
+                <tr><td>Monday</td><td>9:00 &ndash; 18:00</td></tr>
+                <tr><td>Tuesday</td><td>9:00 &ndash; 18:00</td></tr>
+                <tr><td>Wednesday</td><td>9:00 &ndash; 18:00</td></tr>
+                <tr><td>Thursday</td><td>9:00 &ndash; 18:00</td></tr>
+                <tr><td>Friday</td><td>9:00 &ndash; 17:00</td></tr>
+                <tr><td>Saturday</td><td>10:00 &ndash; 14:00</td></tr>
+                <tr><td>Sunday</td><td class="closed">Closed</td></tr>
+              </table>
+              <p class="mt-2" style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:0;">
+                All times in CET (Central European Time). Response within 24h on business days.
+              </p>
+            </div>
+
+            <!-- Quick Help -->
+            <div class="contact-info-card" style="background:linear-gradient(135deg,var(--color-bg-light),#fff);border:2px solid var(--color-primary);border-style:dashed;">
+              <h4 style="color:var(--color-primary);">Quick Help</h4>
+              <p style="font-size:0.85rem;color:var(--color-text-light);margin-bottom:12px;">
+                Looking for quick answers? Check our help resources:
+              </p>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <a href="08-faq.html" class="btn btn-sm btn-outline" style="justify-content:flex-start;">FAQ / Help Center</a>
+                <a href="09-shipping.html" class="btn btn-sm btn-outline" style="justify-content:flex-start;">Shipping Info</a>
+                <a href="10-returns.html" class="btn btn-sm btn-outline" style="justify-content:flex-start;">Returns Policy</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MAP ===== -->
+    <div class="map-section">
+      <div class="map-placeholder">
+        <span class="map-icon">&#128205;</span>
+        <p>Interactive Map Placeholder &mdash; Berlin, Germany</p>
+      </div>
+    </div>
+
+    <!-- ===== FAQ SECTION ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="section-title">
+          <span class="subtitle">Common questions</span>
+          <h2>Frequently Asked Questions</h2>
+        </div>
+
+        <div class="contact-faq-grid">
+          <div class="accordion-item active">
+            <div class="accordion-header">
+              <span>How do I track my order?</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Once your order ships, you&rsquo;ll receive a tracking email with a link to follow your package in real time. You can also check your order status in the My Account section.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Can I change or cancel my order?</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Orders can be modified or cancelled within 2 hours of placing them. After that, the order enters our fulfillment process. Please contact us as soon as possible.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Do you offer corporate / bulk orders?</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              Yes! We offer custom bulk orders for events, corporate gifts, and special occasions. Please use the contact form above and select &ldquo;Custom / Corporate Order&rdquo; as the subject.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>What payment methods do you accept?</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              We accept Visa, Mastercard, PayPal, Klarna (pay later / installments), and bank transfer (Sofort&uuml;berweisung). All payments are processed securely via SSL encryption.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>How do returns work?</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              We offer a 30-day return policy. Items must be unused and in original packaging. Returns within Germany are free. See our <a href="10-returns.html" style="color:var(--color-primary);">Returns &amp; Refunds</a> page for full details.
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>Do you ship internationally?</span>
+              <span class="icon">&#9660;</span>
+            </div>
+            <div class="accordion-body">
+              We currently ship to all EU countries. Standard delivery takes 3&ndash;7 business days depending on destination. Express options are available for most countries.
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <a href="08-faq.html" class="btn btn-outline">View All FAQs</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEWSLETTER ===== -->
+    <section class="newsletter-bar">
+      <div class="container">
+        <div>
+          <h3>Stay in the Loop!</h3>
+          <p>Subscribe to get exclusive deals, new box announcements, and 10% off your first order.</p>
+        </div>
+        <form class="newsletter-form">
+          <input type="email" class="form-input" placeholder="Enter your email address">
+          <button type="submit" class="btn">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <div class="logo-icon">G</div>
+            <div class="logo-text">Game<span style="color:var(--color-primary);">Box</span></div>
+          </div>
+          <p>Curated themed gift boxes for kids filled with building blocks, creative supplies, and fun extras. Making every gift unforgettable.</p>
+          <div class="footer-social">
+            <a href="#" title="Facebook">Fb</a>
+            <a href="#" title="Instagram">Ig</a>
+            <a href="#" title="TikTok">Tk</a>
+            <a href="#" title="YouTube">Yt</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="01-home.html">Home</a>
+            <a href="02-shop.html">Shop All</a>
+            <a href="05-gift-finder.html">Gift Finder</a>
+            <a href="04-how-it-works.html">How It Works</a>
+            <a href="06-about.html">About Us</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Customer Service</h4>
+          <div class="footer-links">
+            <a href="08-faq.html">FAQ / Help Center</a>
+            <a href="09-shipping.html">Shipping &amp; Delivery</a>
+            <a href="10-returns.html">Returns &amp; Refunds</a>
+            <a href="07-contact.html">Contact Us</a>
+            <a href="16-account.html">My Account</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <div class="footer-links">
+            <a href="11-privacy.html">Privacy Policy</a>
+            <a href="12-terms.html">Terms &amp; Conditions</a>
+            <a href="13-impressum.html">Imprint (Impressum)</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">&copy; 2026 GameBox. All rights reserved.</div>
+        <div class="footer-payments">
+          <div class="payment-icon">VISA</div>
+          <div class="payment-icon">MC</div>
+          <div class="payment-icon">PAYPAL</div>
+          <div class="payment-icon">KLARNA</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
